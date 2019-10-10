@@ -2,7 +2,7 @@
 ##### (c) E. Greve, 2019 #####
 ##### FOUR BUTTON PLAYER #####
 ### SGOMS production model ###
-############################## 
+##############################
 
 import sys
 #sys.path.append('/Users/robertwest/CCMSuite')
