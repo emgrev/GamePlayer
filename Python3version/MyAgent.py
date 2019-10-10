@@ -441,13 +441,13 @@ class MyAgent(ACTR):
     def get_code_vision(b_method='method:get_code target:?target content:?content state:start'):  # target is the chunk to be altered
         motor.see_code()
         b_method.modify(state='running')
-        print 'getting code'
+        print ('getting code')
 
     def vision_slow_finished(motor_finst='state:see_code'):
         motor.motor_finst_reset()
         b_method.modify(state='finished')
         focus.set('code:identified')
-        print 'I have spotted the target, I have the new code'
+        print ('I have spotted the target, I have the new code')
 
     ### PART B: response known , hit it
     # in this case the vision component took place already using the get_code method so this is only motor
@@ -456,8 +456,8 @@ class MyAgent(ACTR):
         motor.enter_response(target, content)
         b_method.modify(state='running')
         focus.set('enter_complete')
-        print 'entering response'
-        print 'target object = ', target
+        print ('entering response')
+        print ('target object = ', target)
 
     def response_entered2(b_method='method:?method target:?target state:running',
                           motor_finst='state:enter_response',
@@ -465,4 +465,4 @@ class MyAgent(ACTR):
         b_method.modify(state='finished')
         focus.set('response_entered')
         motor.motor_finst_reset()
-        print 'I have altered', target
+        print ('I have altered', target)
