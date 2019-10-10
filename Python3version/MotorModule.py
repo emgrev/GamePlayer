@@ -10,7 +10,7 @@ from random import randrange, uniform
 class MotorModule(ccm.Model): # defines actions in the environment
 
     def change_b_vision(self):
-        print "Planning Unit Selection !!!!!!!!!!!!"
+        print ("Planning Unit Selection !!!!!!!!!!!!")
         self.parent.visual.set('AK')
 
 
@@ -22,15 +22,15 @@ class MotorModule(ccm.Model): # defines actions in the environment
         yield 3
         x = eval('self.parent.parent.' + env_object)
         x.state = slot_value
-        print env_object
-        print slot_value
+        print (env_object)
+        print (slot_value)
         self.parent.parent.motor_finst.state = 'enter_response'
 
 ## Visual Cues
 ##### Type 1: ACTIVE TASK
     def see_code(self):
         yield 5
-        print 'Object Identified'
+        print ('Object Identified')
         self.parent.parent.motor_finst.state = 'see_code'
         self.parent.visual = 'spotted'
 
