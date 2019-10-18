@@ -28,12 +28,12 @@ class MotorModule(ccm.Model): # defines actions in the environment
 
 ## Visual Cues
 ##### Type 1: ACTIVE TASK
+
     def see_code(self):
         yield 5
         print ('Object Identified')
         self.parent.parent.motor_finst.state = 'see_code'
         self.parent.visual = 'spotted'
-
 
 #### movement
 

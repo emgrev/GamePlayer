@@ -9,38 +9,25 @@ from random import randrange, uniform
 #####################
 
 class MyAgent(ACTR):
-
-# BUFFERS (create buffers and add initial content)
+    
+# BUFFERS
     focus=Buffer()
-    motor=MotorModule()
 
-##    VMbuffer=Buffer()
-##    VM-Memory(VMbuffer)
-
-    DMbuffer=Buffer()
-    DM=Memory(DMbuffer)
-
-    # goal system buffers
     b_context = Buffer()
     b_plan_unit = Buffer()
     b_unit_task = Buffer()
     b_method = Buffer()
     b_operator = Buffer()
-
-    # module Buffers
     b_DM = Buffer()
     b_motor = Buffer()
+    b_visual = Buffer()
+
     visual = Buffer()
-
-    # initial buffer contents
-    b_context.set('status:start have_plan:no planning_unit:none')
-    b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
-
 
 # MODULES (import modules into agent, connect to buffers, and add initial content)
 
-    # vision module - from CCM suite
-    vision_module=SOSVision(visual,delay=.085)
+##    # vision module - from CCM suite
+##    vision_module=SOSVision(visual,delay=.085)
 
     # motor module - defined above
     motor = MotorModule(b_motor)
@@ -48,11 +35,11 @@ class MyAgent(ACTR):
     # declarative memory module - from CCM suite
     DM = Memory(b_DM)
 
+    # initial buffer contents
+    b_context.set('status:start have_plan:no planning_unit:none')
+    b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
 
     # initial memory contents
-##        DM.add('planning_unit:XY         cuelag:none          cue:start          unit_task:X')
-##        DM.add('planning_unit:XY         cuelag:start         cue:X              unit_task:Y')
-##        DM.add('planning_unit:XY         cuelag:X             cue:Y              unit_task:finished')
 
     DM.add('planning_unit:AK         cuelag:none          cue:start          unit_task:AK')
     DM.add('planning_unit:AK         cuelag:start         cue:AK              unit_task:HW')
@@ -107,7 +94,7 @@ class MyAgent(ACTR):
     def setup_ordered_planning_unit(b_plan_unit='planning_unit:?planning_unit cuelag:?cuelag cue:?cue unit_task:?unit_task state:begin_sequence ptype:ordered'):
         b_unit_task.set('unit_task:?unit_task state:start type:ordered')
         b_plan_unit.modify(state='running')
-        print ('begin orderdered planning unit = '), planning_unit
+        print ('begin orderdered planning unit')
 
 ######################### these manage the sequence if it is an ordered planning unit
 
@@ -115,15 +102,14 @@ class MyAgent(ACTR):
                                b_unit_task='unit_task:?unit_task state:finished type:ordered'):
         DM.request('planning_unit:?planning_unit cue:?unit_task unit_task:? cuelag:?cue')
         b_plan_unit.modify(state='retrieve')
-        x=stunit_task
-        print (' finished unit task = '), unit_task
+        print ('request_next_unit_task')
 
     def retrieve_next_unit_task(b_plan_unit='state:retrieve',
                                 b_DM='planning_unit:?planning_unit cuelag:?cuelag cue:?cue!finished unit_task:?unit_task'):
         #b_plan_unit.modify(state='running')
         b_plan_unit.modify(planning_unit=planning_unit,cuelag=cuelag,cue=cue,unit_task=unit_task,state='running')
         b_unit_task.set('unit_task:?unit_task state:start type:ordered')
-        print (' unit_task = '), unit_task
+        print ('retrieve_next_unit_task')
 
 ########################## these manage planning units that are finished ###################
 

@@ -19,8 +19,8 @@ from ccm.lib.actr import *
 class hyrule (ccm.Model):
 
 ### objects for task preformance
-    response = ccm.Model(isa='response', state='none', salience=0.99)
-    display = ccm.Model(isa='diplay', state='state', salience=0.99)
+    response = ccm.Model(isa='response', state='state', salience=0.99)
+    display = ccm.Model(isa='diplay', state='state', code='AK',salience=0.99)
     response_entered = ccm.Model(isa='response_entered', state='no', salience=0.99)
     motor_finst = ccm.Model(isa='motor_finst', state='re_set')
 
