@@ -22,7 +22,7 @@ class MyAgent(ACTR):
     b_motor = Buffer()
     b_visual = Buffer()
 
-    visual = Buffer()
+    # visual = Buffer()
 
 # MODULES (import modules into agent, connect to buffers, and add initial content)
 
@@ -33,8 +33,9 @@ class MyAgent(ACTR):
     DM = Memory(b_DM)
 
     # initial buffer contents
-    b_context.set('status:start have_plan:no planning_unit:none')
+    b_context.set('status:unoccupied planning_unit:none')
     b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
+    b_visual.set('AK')
 
     # initial memory contents
 
@@ -62,27 +63,30 @@ class MyAgent(ACTR):
     ## these productions are the highest level of SGOMS and fire off the context buffer
     ## they can take any ACT-R form (one production or more) but must eventually call a planning unit and update the context buffer
 
-    def run_START_PU(b_context='status:start planning_unit:none'):
-        b_plan_unit.modify(planning_unit='start',cuelag='none',cue='start',unit_task='part_1',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
+##    def run_START_PU(b_context='status:start planning_unit:none'):
+##        b_plan_unit.modify(planning_unit='start',cuelag='none',cue='start',unit_task='part_1',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
 
-##    def run_AK_PU(b_context='status:unoccupied planning_unit:none'):
-##        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
-##        b_context.modify(status='occupied')
-##        print ('run_AK_PU')
-##
-##    def run_RP_PU(b_context='status:unoccupied planning_unit:none'):
-##        #b_context='status:unoccupied planning_unit:RP'):
-##        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
-##        b_context.modify(status='occupied')
-##        print ('run_RP_PU')
-##
-##    def run_HW_PU(b_context='status:unoccupied planning_unit:none'):
-##        #b_context='status:unoccupied planning_unit:HW'):
-##        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
-##        b_context.modify(status='occupied')
-##        print ('run_HW_PU')
+    def run_AK_PU(b_context='status:unoccupied planning_unit:none',
+                  b_visual='AK'):
+        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_AK_PU')
+
+    def run_RP_PU(b_context='status:unoccupied planning_unit:none',
+                  b_visual='RP'):
+        #b_context='status:unoccupied planning_unit:RP'):
+        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_RP_PU')
+
+    def run_HW_PU(b_context='status:unoccupied planning_unit:none',
+                  b_visual='HW'):
+        #b_context='status:unoccupied planning_unit:HW'):
+        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_HW_PU')
 
 #######################################################
 ########## unit task management productions ###########
@@ -121,28 +125,28 @@ class MyAgent(ACTR):
 ##### Unit Task Productions #####
 #################################
 
-##### This UT should run every time the code is run
-    # The sequence of this unit task is:
-        # part 1 goes to the motor module --> use the motor module to put a PU in visual buffer
-        # part 2 checks the visual buffer and activates the PU found
-
-    # for preliminary tests I will just put the AK PU in the visual buffer
-    def part_1(b_unit_task='unit_task:part_1 type:ordered'):
-         print('putting AK in the visual buffer')
-         motor.change_b_vision()
-         b_unit_task.set('unit_task:part_2 type:ordered')
-
-    def part_2(b_unit_task='unit_task:part_2 type:ordered'):
-        vision_v = str(visual.chunk)
-        print(vision_v)
-        print('hopefully this runs')
-        # need to check visual buffer
-        # need to run PU based on that
-        #STOPPPPPPPPPPPPPP
-        b_plan_unit.set('planning_unit:' + vision_v +' cuelag:none cue:start unit_task:' + vision_v + ' state:begin_sequence ptype:ordered')
-        # 'planning_unit:'+ vision_v +' cuelag:P cue:P unit_task:P state:P ptype:P'
-        # in this line of code ^ if I can get planning unit:P to put what ever is in the visual buffer instead of P were in a good place
-        b_unit_task.set('unit_task:stop')
+####### This UT should run every time the code is run
+##    # The sequence of this unit task is:
+##        # part 1 goes to the motor module --> use the motor module to put a PU in visual buffer
+##        # part 2 checks the visual buffer and activates the PU found
+##
+##    # for preliminary tests I will just put the AK PU in the visual buffer
+##    def part_1(b_unit_task='unit_task:part_1 type:ordered'):
+##         print('putting AK in the visual buffer')
+##         # motor.change_b_vision()
+##         b_unit_task.set('unit_task:part_2 type:ordered')
+##
+##    def part_2(b_unit_task='unit_task:part_2 type:ordered'):
+##        vision_v = str(visual.chunk)
+##        print(vision_v)
+##        print('hopefully this runs')
+##        # need to check visual buffer
+##        # need to run PU based on that
+##        #STOPPPPPPPPPPPPPP
+##        b_plan_unit.set('planning_unit:' + vision_v +' cuelag:none cue:start unit_task:' + vision_v + ' state:begin_sequence ptype:ordered')
+##        # 'planning_unit:'+ vision_v +' cuelag:P cue:P unit_task:P state:P ptype:P'
+##        # in this line of code ^ if I can get planning unit:P to put what ever is in the visual buffer instead of P were in a good place
+##        b_unit_task.set('unit_task:stop')
 
 #################
 ##### AK UT #####
@@ -413,11 +417,11 @@ class MyAgent(ACTR):
         print ('getting code')
         
 
-    def vision_slow_finished(motor_finst='state:see_code'):
-        motor.motor_finst_reset()
+    def get_code_finished(vision_finst='state:see_code'):
+        motor.vision_finst_reset()
         b_method.modify(state='finished')
         focus.set('code:identified')
-        print ('I have seen the code, it is ***********************************************************************************')
+        print ('I have seen the code, it is')
         print (self.b_visual)
 
 
@@ -432,9 +436,9 @@ class MyAgent(ACTR):
         print ('target object = ', target)
 
     def response_entered2(b_method='method:?method target:?target state:running',
-                          motor_finst='state:enter_response',
+                          vision_finst='state:enter_response',
                           focus='enter_complete'):
         b_method.modify(state='finished')
         focus.set('response_entered')
-        motor.motor_finst_reset()
+        motor.vision_finst_reset()
         print ('I have altered', target)

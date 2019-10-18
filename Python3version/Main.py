@@ -22,7 +22,7 @@ class hyrule (ccm.Model):
     response = ccm.Model(isa='response', state='state', salience=0.99)
     display = ccm.Model(isa='diplay', state='AK',salience=0.99)
     response_entered = ccm.Model(isa='response_entered', state='no', salience=0.99)
-    motor_finst = ccm.Model(isa='motor_finst', state='re_set')
+    vision_finst = ccm.Model(isa='motor_finst', state='re_set')
 
 ######## run model #########
 link = MyAgent()         # name the agent
