@@ -26,9 +26,6 @@ class MyAgent(ACTR):
 
 # MODULES (import modules into agent, connect to buffers, and add initial content)
 
-##    # vision module - from CCM suite
-##    vision_module=SOSVision(visual,delay=.085)
-
     # motor module - defined above
     motor = MotorModule(b_motor)
 
@@ -70,22 +67,22 @@ class MyAgent(ACTR):
         b_context.modify(status='occupied')
         print ('STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
 
-    def run_AK_PU(b_context='status:unoccupied planning_unit:none'):
-        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('run_AK_PU')
-
-    def run_RP_PU(b_context='status:unoccupied planning_unit:none'):
-        #b_context='status:unoccupied planning_unit:RP'):
-        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('run_RP_PU')
-
-    def run_HW_PU(b_context='status:unoccupied planning_unit:none'):
-        #b_context='status:unoccupied planning_unit:HW'):
-        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('run_HW_PU')
+##    def run_AK_PU(b_context='status:unoccupied planning_unit:none'):
+##        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_AK_PU')
+##
+##    def run_RP_PU(b_context='status:unoccupied planning_unit:none'):
+##        #b_context='status:unoccupied planning_unit:RP'):
+##        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_RP_PU')
+##
+##    def run_HW_PU(b_context='status:unoccupied planning_unit:none'):
+##        #b_context='status:unoccupied planning_unit:HW'):
+##        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_HW_PU')
 
 #######################################################
 ########## unit task management productions ###########
@@ -115,7 +112,8 @@ class MyAgent(ACTR):
 
     def last_unit_task_ordered_plan(b_plan_unit='planning_unit:?planning_unit',
                                     b_unit_task='unit_task:finished state:start type:ordered'):
-        print ('finished planning unit='),planning_unit
+        print ('finished planning unit =')
+        print (planning_unit)
         b_unit_task.set('stop')
         b_context.modify(status='unoccupied') 
 
@@ -413,12 +411,15 @@ class MyAgent(ACTR):
         motor.see_code()
         b_method.modify(state='running')
         print ('getting code')
+        
 
     def vision_slow_finished(motor_finst='state:see_code'):
         motor.motor_finst_reset()
         b_method.modify(state='finished')
         focus.set('code:identified')
-        print ('I have spotted the target, I have the new code')
+        print ('I have seen the code, it is ***********************************************************************************')
+        print (self.b_visual)
+
 
     ### PART B: response known , hit it
     # in this case the vision component took place already using the get_code method so this is only motor

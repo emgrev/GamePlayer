@@ -31,9 +31,11 @@ class MotorModule(ccm.Model): # defines actions in the environment
 
     def see_code(self):
         yield 5
-        print ('Object Identified')
+        code = self.parent.parent.display.state
+        print ('I see the code is..............................................................')
+        print (code)
         self.parent.parent.motor_finst.state = 'see_code'
-        self.parent.visual = 'spotted'
+        self.parent.b_visual = code
 
 #### movement
 
