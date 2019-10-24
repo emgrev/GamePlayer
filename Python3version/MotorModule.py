@@ -9,21 +9,15 @@ from random import randrange, uniform
 
 class MotorModule(ccm.Model): # defines actions in the environment
     
-##
-##    def change_b_vision(self):
-##        print ("Planning Unit Selection !!!!!!!!!!!!")
-##        self.parent.visual.set('AK')
-##
-##
-### change_state is a generic action thavision_finstt changes the state slot of any object
-### disadvantages (1) yield #time is always the same (2) cannot use for parallel actions
 
-##### This instantly causes actions in the environment
-##### It is not a proper part of the agent
-    def referee_action(self, env_object, slot_value):
-        x = eval('self.parent.parent.' + env_object)
-        x.state = slot_value
+##### This instantly causes changes in the environment
+##### It is not a proper part of the agent    
+    def referee_action(self, env_object, slot_name, slot_value):
+        print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+        x = self.parent.parent[env_object]
+        setattr(x, slot_name, slot_value)
         print (env_object)
+        print(slot_name)
         print (slot_value)
 
 ##### This sees the code, which is a value in the state slot of the display object
@@ -43,8 +37,9 @@ class MotorModule(ccm.Model): # defines actions in the environment
         yield 3
         x = eval('self.parent.parent.' + env_object)
         x.state = slot_value
-        print (env_object)
+        print (env_object) 
         print (slot_value)
+        print ('*******************************************************************************')
         self.parent.parent.vision_finst.state = 'enter_response' # using vision finst for now
 
 #### This resets the finst state indicating the action is finished

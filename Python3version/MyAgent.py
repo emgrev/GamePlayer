@@ -119,7 +119,14 @@ class MyAgent(ACTR):
         print ('finished planning unit =')
         print (planning_unit)
         b_unit_task.set('stop')
-        b_context.modify(status='unoccupied') 
+        b_context.modify(status='unoccupied')
+        ############################### referee
+        choices = ['AK','RP','HW']
+        x=random.choice(choices)
+        print ('next code is')
+        print (x)
+        motor.referee_action('display', 'state', x)
+        ################################
 
 #################################
 ##### Unit Task Productions #####
