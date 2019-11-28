@@ -24,7 +24,7 @@ class MotorModule(ccm.Model): # defines actions in the environment
     def see_code(self):
         self.parent.parent.vision_finst.state = 'busy' # register that the vision system is busy
         print ('getting the code')
-        yield 0.5
+        #yield 0.005
         code = self.parent.parent.display.state # get the code from the state slot of the display object
         self.parent.b_visual = code # put code into visual buffer
         self.parent.parent.vision_finst.state = 'see_code' # register that see_code is complete
@@ -46,4 +46,5 @@ class MotorModule(ccm.Model): # defines actions in the environment
 #### Currently using the vision finst for all actions (so no interleaving or parallal)
 
     def vision_finst_reset(self):
+        #yield 0.005
         self.parent.parent.vision_finst.state = 're_set' # reset the vision_finst
