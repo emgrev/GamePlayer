@@ -169,6 +169,106 @@ class MyAgent(ACTR):
 ##        # in this line of code ^ if I can get planning unit:P to put what ever is in the visual buffer instead of P were in a good place
 ##        b_unit_task.set('unit_task:stop')
 
+
+#################
+##### START Planning Unit #####
+#################
+
+#   AK
+# < RP
+#   HW                   
+
+
+# add condition to fire production
+    def START_ordered(b_unit_task='unit_task:START state:start type:ordered'): ### this unit task is chosen to fire by planning unit
+        b_unit_task.modify(state='begin')
+        print ('start unit task START')
+
+    ## the first production in the unit task must begin this way
+    def START_start(b_unit_task='unit_task:RP state:begin type:?type'):
+        b_unit_task.set('unit_task:RP state:running type:?type')
+        b_method.set('method:response target:response content:4321 state:start')
+        focus.set('RPstart')
+        print ('RP:4321')
+
+    ##### START BODY: #####
+    ### PROMPT 1 - KNOWN, FAST
+    def RP_SU(b_unit_task='unit_task:RP state:running type:?type',
+                   b_method='state:finished'):
+        b_method.set('method:response target:response content:4123 state:start')
+        b_unit_task.set('unit_task:RP state:running2 type:?type')
+        print ('SU:4123')
+
+        ## Prompt 1 = running perfect.
+
+    ##### RP PROMPT 2 #####
+    ### IDENTIFY -> RESPOND
+    ### ROUND 2 - TWO POSSIBLE, KNOWN, LAG
+    ### IDENTIFY:
+    def RP_identify2(b_unit_task='unit_task:RP state:running2 type:?type',
+                            focus='response_entered', b_method='state:finished'):
+        b_method.set('method:get_code target:response content:0000 state:start')
+        focus.set('get_code')
+        b_unit_task.set('unit_task:RP state:runningC type:?type')
+        print ('waiting to see if YP or ZB')
+        print ('getting the code for second prompt...')
+
+    #### RESPOND YP:
+    def RP_YP(b_unit_task='unit_task:RP state:runningC type:?type',
+                            b_method='state:finished'):
+        b_method.set('method:response target:response content:3412 state:start')
+        b_unit_task.set('unit_task:RP state:running3 type:?type')
+        print ('YP:3412')
+        # next is FJ
+
+
+    ### RESPOND ZB:
+    def RP_ZB(b_unit_task='unit_task:RP state:runningC type:?type',
+                            b_method='state:finished'):
+        b_method.set('method:response target:response content:2143 state:start')
+        b_unit_task.set('unit_task:RP state:running4 type:?type')
+        print ('ZB:2143')
+        # next is WM
+        ### RUN GET CODE METH
+
+    ##### RP PROMPT 3 #####
+    ### ROUND 3:
+    ### BANG BANG
+
+    ### RESPOND FJ
+    def RP_FJ(b_unit_task='unit_task:RP state:running3 type:?type',
+                   focus='response_entered'):
+        b_method.set('method:response target:response content:3214 state:start')
+        ### FOCUS SET TO END
+        focus.set('RP_done')
+        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
+        print ('FJ:3214')
+        print ('Ending Unit Task')
+
+    ### RESPOND WM
+    def RP_WM(b_unit_task='unit_task:RP state:running4 type:?type',
+                   focus='response_entered'):
+        b_method.set('method:response target:response content:1432 state:start')
+        ### FOCUS SET TO END
+        focus.set('RP_done')
+        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
+        print ('WM:1432')
+        print ('Ending Unit Task')
+
+                ### RUN GET CODE METH
+    ##### RP FINISH #####
+    ### Final step:
+    ## Finishing the unit task
+    def RP_finished_ordered(
+        b_method='state:finished',
+                                ## this line assumes waiting for the last method to finish
+                                focus='response_entered',
+                                b_unit_task='unit_task:RP state:end_task type:ordered',
+                                b_plan_unit='ptype:ordered'):
+        print ('finished unit task RP(ordered)')
+        b_unit_task.set('unit_task:RP state:finished type:ordered')
+
+
 #################
 ##### AK UT #####
 #################
@@ -437,13 +537,14 @@ class MyAgent(ACTR):
         b_method.modify(state='running')
         print ('getting code')
         
-
-##    def get_code_finished(vision_finst='state:see_code'):
-##        motor.vision_finst_reset()
-##        b_method.modify(state='finished')
-##        focus.set('code:identified')
-##        print ('I have seen the code, it is')
-##        print (self.b_visual)
+#######################################################################################
+    def get_code_finished(vision_finst='state:see_code'):
+        motor.vision_finst_reset()
+        b_method.modify(state='finished')
+        focus.set('code:identified')
+        print ('I have seen the code, it is')
+        print (self.b_visual)
+        ###########################################################################
 
 
     ### PART B: response known , hit it
