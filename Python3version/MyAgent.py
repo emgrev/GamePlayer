@@ -35,7 +35,7 @@ class MyAgent(ACTR):
     # initial buffer contents
     b_context.set('status:unoccupied planning_unit:none')
     b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
-    b_visual.set('AK')
+    b_visual.set('00')
 
     # initial memory contents
 
@@ -54,8 +54,8 @@ class MyAgent(ACTR):
     DM.add('planning_unit:HW         cuelag:HW             cue:RP              unit_task:AK')
     DM.add('planning_unit:HW         cuelag:RP              cue:AK              unit_task:finished')
 
-    DM.add('planning_unit:start      cuelag:none          cue:start          unit_task:part_1')
-    DM.add('planning_unit:start      cuelag:start         cue:wait            unit_task:finished')
+    DM.add('planning_unit:start_game      cuelag:none          cue:start          unit_task:START')
+    DM.add('planning_unit:start_game      cuelag:start         cue:no_cue            unit_task:finished')
 
 
 ########### create productions for choosing planning units ###########
@@ -68,39 +68,31 @@ class MyAgent(ACTR):
 ##        b_context.modify(status='occupied')
 ##        print ('STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
 
-    def see_the_code(b_context='status:unoccupied planning_unit:none'):
-        print('call motor for vision')
-        motor.see_code()
-        b_context.set('status:looking planning_unit:none')
-        
-    def see_code_finished(b_context='status:looking planning_unit:none',
-                          vision_finst='state:see_code'):
-        print ('before')
-        motor.vision_finst_reset()
-        print ('after')
-        b_context.set('status:seen planning_unit:none')
-        print ('I have seen the code, it is')
-        print (self.b_visual)
-        
-    def run_AK_PU(b_context='status:seen planning_unit:none',
-                  b_visual='AK'):
-        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('run_AK_PU')
 
-    def run_RP_PU(b_context='status:seen planning_unit:none',
-                  b_visual='RP'):
-        #b_context='status:unoccupied planning_unit:RP'):
-        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
+    def start_game(b_context='status:unoccupied planning_unit:none'):
+        b_plan_unit.modify(planning_unit='start_game',cuelag='none',cue='start',unit_task='START',state='begin_sequence',ptype='ordered')
         b_context.modify(status='occupied')
-        print ('run_RP_PU')
-
-    def run_HW_PU(b_context='status:seen planning_unit:none',
-                  b_visual='HW'):
-        #b_context='status:unoccupied planning_unit:HW'):
-        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
-        b_context.modify(status='occupied')
-        print ('run_HW_PU')
+        print ('start game')
+       
+##    def run_AK_PU(b_context='status:seen planning_unit:none',
+##                  b_visual='AK'):
+##        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_AK_PU')
+##
+##    def run_RP_PU(b_context='status:seen planning_unit:none',
+##                  b_visual='RP'):
+##        #b_context='status:unoccupied planning_unit:RP'):
+##        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_RP_PU')
+##
+##    def run_HW_PU(b_context='status:seen planning_unit:none',
+##                  b_visual='HW'):
+##        #b_context='status:unoccupied planning_unit:HW'):
+##        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
+##        b_context.modify(status='occupied')
+##        print ('run_HW_PU')
 
 #######################################################
 ########## unit task management productions ###########
@@ -142,131 +134,35 @@ class MyAgent(ACTR):
         motor.referee_action('display', 'state', x)
         ################################
 
-#################################
-##### Unit Task Productions #####
-#################################
-
-####### This UT should run every time the code is run
-##    # The sequence of this unit task is:
-##        # part 1 goes to the motor module --> use the motor module to put a PU in visual buffer
-##        # part 2 checks the visual buffer and activates the PU found
-##
-##    # for preliminary tests I will just put the AK PU in the visual buffer
-##    def part_1(b_unit_task='unit_task:part_1 type:ordered'):
-##         print('putting AK in the visual buffer')
-##         # motor.change_b_vision()
-##         b_unit_task.set('unit_task:part_2 type:ordered')
-##
-##    def part_2(b_unit_task='unit_task:part_2 type:ordered'):
-##        vision_v = str(visual.chunk)
-##        print(vision_v)
-##        print('hopefully this runs')
-##        # need to check visual buffer
-##        # need to run PU based on that
-##        #STOPPPPPPPPPPPPPP
-##        b_plan_unit.set('planning_unit:' + vision_v +' cuelag:none cue:start unit_task:' + vision_v + ' state:begin_sequence ptype:ordered')
-##        # 'planning_unit:'+ vision_v +' cuelag:P cue:P unit_task:P state:P ptype:P'
-##        # in this line of code ^ if I can get planning unit:P to put what ever is in the visual buffer instead of P were in a good place
-##        b_unit_task.set('unit_task:stop')
 
 
 #################
-##### START Planning Unit #####
+##### START Planning Unit - used to start the game
 #################
 
 #   AK
 # < RP
 #   HW                   
 
-
-# add condition to fire production
     def START_ordered(b_unit_task='unit_task:START state:start type:ordered'): ### this unit task is chosen to fire by planning unit
         b_unit_task.modify(state='begin')
         print ('start unit task START')
 
     ## the first production in the unit task must begin this way
-    def START_start(b_unit_task='unit_task:RP state:begin type:?type'):
-        b_unit_task.set('unit_task:RP state:running type:?type')
-        b_method.set('method:response target:response content:4321 state:start')
-        focus.set('RPstart')
-        print ('RP:4321')
-
-    ##### START BODY: #####
-    ### PROMPT 1 - KNOWN, FAST
-    def RP_SU(b_unit_task='unit_task:RP state:running type:?type',
-                   b_method='state:finished'):
-        b_method.set('method:response target:response content:4123 state:start')
-        b_unit_task.set('unit_task:RP state:running2 type:?type')
-        print ('SU:4123')
-
-        ## Prompt 1 = running perfect.
-
-    ##### RP PROMPT 2 #####
-    ### IDENTIFY -> RESPOND
-    ### ROUND 2 - TWO POSSIBLE, KNOWN, LAG
-    ### IDENTIFY:
-    def RP_identify2(b_unit_task='unit_task:RP state:running2 type:?type',
-                            focus='response_entered', b_method='state:finished'):
+    def START_start(b_unit_task='unit_task:START state:begin type:?type'):
         b_method.set('method:get_code target:response content:0000 state:start')
         focus.set('get_code')
         b_unit_task.set('unit_task:RP state:runningC type:?type')
-        print ('waiting to see if YP or ZB')
-        print ('getting the code for second prompt...')
+        print ('waiting to see code')
 
-    #### RESPOND YP:
-    def RP_YP(b_unit_task='unit_task:RP state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:3412 state:start')
-        b_unit_task.set('unit_task:RP state:running3 type:?type')
-        print ('YP:3412')
-        # next is FJ
+    def START_AK(b_unit_task='unit_task:START state:runningC type:?type',
+                 b_method='state:finished',
+                 b_visual='AK'):
+        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_AK_PU')
+        b_unit_task.set('unit_task:START state:finished type:ordered')
 
-
-    ### RESPOND ZB:
-    def RP_ZB(b_unit_task='unit_task:RP state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:2143 state:start')
-        b_unit_task.set('unit_task:RP state:running4 type:?type')
-        print ('ZB:2143')
-        # next is WM
-        ### RUN GET CODE METH
-
-    ##### RP PROMPT 3 #####
-    ### ROUND 3:
-    ### BANG BANG
-
-    ### RESPOND FJ
-    def RP_FJ(b_unit_task='unit_task:RP state:running3 type:?type',
-                   focus='response_entered'):
-        b_method.set('method:response target:response content:3214 state:start')
-        ### FOCUS SET TO END
-        focus.set('RP_done')
-        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('FJ:3214')
-        print ('Ending Unit Task')
-
-    ### RESPOND WM
-    def RP_WM(b_unit_task='unit_task:RP state:running4 type:?type',
-                   focus='response_entered'):
-        b_method.set('method:response target:response content:1432 state:start')
-        ### FOCUS SET TO END
-        focus.set('RP_done')
-        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('WM:1432')
-        print ('Ending Unit Task')
-
-                ### RUN GET CODE METH
-    ##### RP FINISH #####
-    ### Final step:
-    ## Finishing the unit task
-    def RP_finished_ordered(
-        b_method='state:finished',
-                                ## this line assumes waiting for the last method to finish
-                                focus='response_entered',
-                                b_unit_task='unit_task:RP state:end_task type:ordered',
-                                b_plan_unit='ptype:ordered'):
-        print ('finished unit task RP(ordered)')
-        b_unit_task.set('unit_task:RP state:finished type:ordered')
 
 
 #################
@@ -545,6 +441,22 @@ class MyAgent(ACTR):
         print ('I have seen the code, it is')
         print (self.b_visual)
         ###########################################################################
+
+
+##    def see_the_code(b_context='status:unoccupied planning_unit:none'):
+##        print('call motor for vision')
+##        motor.see_code()
+##        b_context.set('status:looking planning_unit:none')
+##        
+##    def see_code_finished(b_context='status:looking planning_unit:none',
+##                          vision_finst='state:see_code'):
+##        print ('before')
+##        motor.vision_finst_reset()
+##        print ('after')
+##        b_context.set('status:seen planning_unit:none')
+##        print ('I have seen the code, it is')
+##        print (self.b_visual)
+
 
 
     ### PART B: response known , hit it
