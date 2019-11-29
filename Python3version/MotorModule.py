@@ -26,7 +26,7 @@ class MotorModule(ccm.Model): # defines actions in the environment
         print ('getting the code')
         #yield 0.005
         code = self.parent.parent.display.state # get the code from the state slot of the display object
-        self.parent.b_visual = code # put code into visual buffer
+        self.parent.b_visual.set(code) # put code into visual buffer
         self.parent.parent.vision_finst.state = 'see_code' # register that see_code is complete
         print ('I see the code is..')
         print (code)

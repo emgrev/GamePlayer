@@ -152,18 +152,22 @@ class MyAgent(ACTR):
     def START_start(b_unit_task='unit_task:START state:begin type:?type'):
         b_method.set('method:get_code target:response content:0000 state:start')
         focus.set('get_code')
-        b_unit_task.set('unit_task:RP state:runningC type:?type')
+        b_unit_task.set('unit_task:START state:running type:?type')
         print ('waiting to see code')
 
-    def START_AK(b_unit_task='unit_task:START state:runningC type:?type',
-                 b_method='state:finished',
-                 b_visual='AK'):
+    def START_AK(b_unit_task='unit_task:START state:running type:?type',
+                 b_method='state:finished', b_visual='?ak'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        print (ak)
         b_context.modify(status='occupied')
         print ('run_AK_PU')
         b_unit_task.set('unit_task:START state:finished type:ordered')
 
-
+##        motor.vision_finst_reset()
+##        b_method.modify(state='finished')
+##        focus.set('code:identified')
+##        print ('I have seen the code, it is')
+##        print (self.b_visual)
 
 #################
 ##### AK UT #####
@@ -433,29 +437,12 @@ class MyAgent(ACTR):
         b_method.modify(state='running')
         print ('getting code')
         
-#######################################################################################
     def get_code_finished(vision_finst='state:see_code'):
         motor.vision_finst_reset()
         b_method.modify(state='finished')
         focus.set('code:identified')
-        print ('I have seen the code, it is')
-        print (self.b_visual)
-        ###########################################################################
+        print ('I have seen the code')
 
-
-##    def see_the_code(b_context='status:unoccupied planning_unit:none'):
-##        print('call motor for vision')
-##        motor.see_code()
-##        b_context.set('status:looking planning_unit:none')
-##        
-##    def see_code_finished(b_context='status:looking planning_unit:none',
-##                          vision_finst='state:see_code'):
-##        print ('before')
-##        motor.vision_finst_reset()
-##        print ('after')
-##        b_context.set('status:seen planning_unit:none')
-##        print ('I have seen the code, it is')
-##        print (self.b_visual)
 
 
 
