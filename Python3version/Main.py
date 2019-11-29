@@ -20,7 +20,7 @@ class hyrule (ccm.Model):
 
 ### objects for task preformance
     response = ccm.Model(isa='response', state='state')
-    display = ccm.Model(isa='diplay', state='AK')
+    display = ccm.Model(isa='diplay', state='HW')
     response_entered = ccm.Model(isa='response_entered', state='no')
     vision_finst = ccm.Model(isa='motor_finst', state='re_set')
 

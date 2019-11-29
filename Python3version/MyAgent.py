@@ -36,6 +36,7 @@ class MyAgent(ACTR):
     b_context.set('status:unoccupied planning_unit:none')
     b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
     b_visual.set('00')
+    focus.set('start')
 
     # initial memory contents
 
@@ -63,17 +64,33 @@ class MyAgent(ACTR):
     ## these productions are the highest level of SGOMS and fire off the context buffer
     ## they can take any ACT-R form (one production or more) but must eventually call a planning unit and update the context buffer
 
-##    def run_START_PU(b_context='status:start planning_unit:none'):
-##        b_plan_unit.modify(planning_unit='start',cuelag='none',cue='start',unit_task='part_1',state='begin_sequence',ptype='ordered')
-##        b_context.modify(status='occupied')
-##        print ('STARTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT')
 
+    def START_start(focus='start', b_context='status:unoccupied planning_unit:none'):
+        b_method.set('method:get_code target:response content:0000 state:start')
+        focus.set('get_code')
+        b_unit_task.set('unit_task:START state:running')
+        print ('waiting to see code')
 
-    def start_game(b_context='status:unoccupied planning_unit:none'):
-        b_plan_unit.modify(planning_unit='start_game',cuelag='none',cue='start',unit_task='START',state='begin_sequence',ptype='ordered')
+    def START_AK(b_unit_task='unit_task:START state:running',
+                 b_method='state:finished', b_visual='AK'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
         b_context.modify(status='occupied')
-        print ('start game')
-       
+        print ('run_AK_PU')
+
+    def START_RP(b_unit_task='unit_task:START state:running',
+                 b_method='state:finished', b_visual='RP'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_RP_PU')
+
+    def START_HW(b_unit_task='unit_task:START state:running',
+                 b_method='state:finished', b_visual='HW'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        b_context.modify(status='occupied')
+        print ('run_HW_PU')
+
+
+        
 ##    def run_AK_PU(b_context='status:seen planning_unit:none',
 ##                  b_visual='AK'):
 ##        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
@@ -144,24 +161,24 @@ class MyAgent(ACTR):
 # < RP
 #   HW                   
 
-    def START_ordered(b_unit_task='unit_task:START state:start type:ordered'): ### this unit task is chosen to fire by planning unit
-        b_unit_task.modify(state='begin')
-        print ('start unit task START')
-
-    ## the first production in the unit task must begin this way
-    def START_start(b_unit_task='unit_task:START state:begin type:?type'):
-        b_method.set('method:get_code target:response content:0000 state:start')
-        focus.set('get_code')
-        b_unit_task.set('unit_task:START state:running type:?type')
-        print ('waiting to see code')
-
-    def START_AK(b_unit_task='unit_task:START state:running type:?type',
-                 b_method='state:finished', b_visual='?ak'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
-        print (ak)
-        b_context.modify(status='occupied')
-        print ('run_AK_PU')
-        b_unit_task.set('unit_task:START state:finished type:ordered')
+##    def START_ordered(b_unit_task='unit_task:START state:start type:ordered'): ### this unit task is chosen to fire by planning unit
+##        b_unit_task.modify(state='begin')
+##        print ('start unit task START')
+##
+##    ## the first production in the unit task must begin this way
+##    def START_start(b_unit_task='unit_task:START state:begin type:?type'):
+##        b_method.set('method:get_code target:response content:0000 state:start')
+##        focus.set('get_code')
+##        b_unit_task.set('unit_task:START state:running type:?type')
+##        print ('waiting to see code')
+##
+##    def START_AK(b_unit_task='unit_task:START state:running type:?type',
+##                 b_method='state:finished', b_visual='?ak'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+##        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+##        print (ak)
+##        b_context.modify(status='occupied')
+##        print ('run_AK_PU')
+##        b_unit_task.set('unit_task:START state:finished type:ordered')
 
 ##        motor.vision_finst_reset()
 ##        b_method.modify(state='finished')
