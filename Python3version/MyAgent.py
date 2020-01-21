@@ -58,6 +58,7 @@ class MyAgent(ACTR):
 ##    DM.add('planning_unit:start_game      cuelag:none          cue:start          unit_task:START')
 ##    DM.add('planning_unit:start_game      cuelag:start         cue:no_cue            unit_task:finished')
 
+## this could be used, but instead the code goes straight to the START uniti task
 
 ########### create productions for choosing planning units ###########
 
