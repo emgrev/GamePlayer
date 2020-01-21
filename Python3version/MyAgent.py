@@ -55,8 +55,8 @@ class MyAgent(ACTR):
     DM.add('planning_unit:HW         cuelag:HW             cue:RP              unit_task:AK')
     DM.add('planning_unit:HW         cuelag:RP              cue:AK              unit_task:finished')
 
-    DM.add('planning_unit:start_game      cuelag:none          cue:start          unit_task:START')
-    DM.add('planning_unit:start_game      cuelag:start         cue:no_cue            unit_task:finished')
+##    DM.add('planning_unit:start_game      cuelag:none          cue:start          unit_task:START')
+##    DM.add('planning_unit:start_game      cuelag:start         cue:no_cue            unit_task:finished')
 
 
 ########### create productions for choosing planning units ###########
@@ -65,11 +65,7 @@ class MyAgent(ACTR):
     ## they can take any ACT-R form (one production or more) but must eventually call a planning unit and update the context buffer
 
 
-    def START_start(b_context='status:unoccupied planning_unit:none'):
-        b_method.set('method:get_code target:response content:0000 state:start')
-        b_unit_task.set('unit_task:START state:running')
-        b_context.modify(status='starting_game')
-        print ('waiting to see code')
+
 
     def START_AK(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
@@ -135,6 +131,18 @@ class MyAgent(ACTR):
         ################################
 
 
+#################
+##### START UT ##
+#################
+
+## this unit task fires from the starting condition and puts the code in the visual buffer
+## in its current form it is a hack and not a proper unit task
+
+    def START_start(b_context='status:unoccupied planning_unit:none'):
+        b_method.set('method:get_code target:response content:0000 state:start')
+        b_unit_task.set('unit_task:START state:running')
+        b_context.modify(status='starting_game')
+        print ('waiting to see code')
 
 #################
 ##### AK UT #####
