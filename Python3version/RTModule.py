@@ -3,11 +3,8 @@ import time
 import os
 from datetime import datetime
 
-### TODO: Need a way to add additional arguments so new features/columns can be easily added
-### May be able to do this with args* in initialization and recordRT() function
 
 class RTModule(ccm.Model):
-    #clock = time.time()
     last_time = time.time()
 
     def __init__(self, file_name=None):
@@ -18,7 +15,11 @@ class RTModule(ccm.Model):
         # Set up header for .csv file format
         if not os.path.exists(self._file_name):
             print("Writing new file")
-            open(self._file_name, "w").write("agent,time_stamp,rt(seconds)\n")
+            self.fh = ShallowFileHandle(self._file_name)
+            self.fh.file_handle.write("agent,time_stamp,rt(seconds)\n")
+
+        else:
+            self.fh = ShallowFileHandle(self._file_name)
 
         self.last_time = time.time()
 
@@ -31,10 +32,14 @@ class RTModule(ccm.Model):
             col = col + "," + '"' + str(x) + '"'
 
         self.last_time = time.time()
-        f = open(self._file_name, "a")
-        f.write(col + "\n")
-        f.close()
+        self.fh.file_handle.write(col + "\n")
 
-#test = RTModule()
-#test.recordRT()
-#test.recordRT()
+
+class ShallowFileHandle():
+
+    def __init__(self, file_name):
+            self._file_name = os.path.join(os.curdir,file_name)
+            self.file_handle = open(self._file_name, "a")
+
+    def __deepcopy__(self, memo):
+        return self
