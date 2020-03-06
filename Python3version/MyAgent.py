@@ -1,6 +1,7 @@
 import sys
 import ccm
 from MotorModule import *
+from RTModule import *
 from ccm.lib.actr import *
 from random import randrange, uniform
 
@@ -9,7 +10,7 @@ from random import randrange, uniform
 #####################
 
 class MyAgent(ACTR):
-    
+
 # BUFFERS
     focus=Buffer()
 
@@ -31,6 +32,9 @@ class MyAgent(ACTR):
 
     # declarative memory module - from CCM suite
     DM = Memory(b_DM)
+
+    # reation time module - used to record the reaction time of the agent
+    RT = RTModule()
 
     # initial buffer contents
     b_context.set('status:unoccupied planning_unit:none')
@@ -412,7 +416,7 @@ class MyAgent(ACTR):
         motor.see_code()
         b_method.modify(state='running')
         print ('getting code')
-        
+
     def get_code_finished(vision_finst='state:see_code'):
         motor.vision_finst_reset()
         b_method.modify(state='finished')
@@ -427,6 +431,7 @@ class MyAgent(ACTR):
 
     def response(b_method='method:response target:?target content:?content state:start'):  # target is the chunk to be altered
         motor.enter_response(target, content)
+        RT.recordRT(content) # Record a reaction time after a response is entered
         b_method.modify(state='running')
         focus.set('enter_complete')
         print ('entering response')
