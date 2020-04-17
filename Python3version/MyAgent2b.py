@@ -113,18 +113,32 @@ class MyAgent(ACTR):
                                  b_plan_unit_order='counter:one first:?first second:?second third:?third fourth:?fourth'):
         #b_plan_unit_order.modify(counter='two')
         b_plan_unit.modify(state='running')
-        b_unit_task.set('unit_task:?second state:start type:ordered')
-        b_plan_unit_order.set('counter:two')
+        b_unit_task.set('unit_task:RP state:start type:ordered')
+        b_plan_unit_order.modify(counter='two')
         print ('fast - start second unit task >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 2222222222222222222222222222')
         print (second)
 
-    def request_third_unit_task(b_plan_unit_order='counter:two'):
+    def request_third_unit_task(b_plan_unit='unit_task:?unit_task state:running',
+                                b_unit_task='unit_task:?unit_task state:finished type:ordered',
+                                b_plan_unit_order='counter:two first:?first second:?second third:?third fourth:?fourth'):
         #b_plan_unit_order.modify(counter='two')
 ##        b_plan_unit.modify(state='running')
 ##        b_unit_task.set('unit_task:?second state:start type:ordered')
 ##        b_plan_unit_order.set('counter:two first:?first second:?second third:?third fourth:?fourth')
         print ('fast - start second unit task >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 333333333333333333333333333333')
         print ('third')
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##    def request_third_unit_task(b_plan_unit='unit_task:?unit_task state:running',
 ##                                b_unit_task='unit_task:?unit_task state:finished type:ordered'):

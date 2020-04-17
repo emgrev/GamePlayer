@@ -10,7 +10,7 @@ sys.path.append('/Users/robertwest/pythonACTR3-master/')
 
 import ccm
 from random import randrange, uniform
-from MyAgent2 import MyAgent
+from MyAgent import MyAgent
 from Manager import Manager
 log = ccm.log()
 #log=ccm.log(html=True)
