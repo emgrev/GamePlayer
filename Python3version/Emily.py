@@ -182,20 +182,36 @@ class MyAgent(ACTR):
         b_unit_task.modify(state='begin')
         print ('start unit task AK')
 
-    ## the first production in the unit task must begin this way
-    def AK_start(b_unit_task='unit_task:AK state:begin type:?type'):
-        b_unit_task.set('unit_task:AK state:running2 type:?type')
-        b_method.set('method:response target:response content:1234 state:start')
-##        focus.set('AKstart')
+    def AK_start(b_unit_task='unit_task:AK state:begin'):
+        b_unit_task.set('unit_task:AK state:running')
+        target='responce'
+        content='1234'
+        motor.enter_response(target, content)
+        focus.set('HWstart')
         print ('AK:1234 - first unit task')
 
-    ## body of unit task
-    #### RESPOND WM:
-    def AK_WM(b_unit_task='unit_task:AK state:running2 type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:1432 state:start')
-        b_unit_task.set('unit_task:AK state:running3 type:?type')
+    def AK_WM(b_unit_task='unit_task:AK state:running',
+              vision_finst='state:finished'):
+        target='responce'
+        content='1432'
+        motor.enter_response(target, content)
+        focus.set('WMstart')
         print ('WM:1432 - mid')
+
+##    ## the first production in the unit task must begin this way
+##    def AK_start(b_unit_task='unit_task:AK state:begin type:?type'):
+##        b_unit_task.set('unit_task:AK state:running2 type:?type')
+##        b_method.set('method:response target:response content:1234 state:start')
+####        focus.set('AKstart')
+##        print ('AK:1234 - first unit task')
+##
+##    ## body of unit task
+##    #### RESPOND WM:
+##    def AK_WM(b_unit_task='unit_task:AK state:running2 type:?type',
+##                            b_method='state:finished'):
+##        b_method.set('method:response target:response content:1432 state:start')
+##        b_unit_task.set('unit_task:AK state:running3 type:?type')
+##        print ('WM:1432 - mid')
 
     #### RESPOND SU:
     def AK_SU(b_unit_task='unit_task:AK state:running3 type:?type',
@@ -339,36 +355,32 @@ class MyAgent(ACTR):
 # HW unit task HW-YP--- ZB
 #                     \ SU
 
-# add condition to fire production
-    def HW_ordered(b_unit_task='unit_task:HW state:start type:ordered'): ### this unit task is chosen to fire by planning unit
+    def HW_ordered(b_unit_task='unit_task:HW state:start type:ordered'):
         b_unit_task.modify(state='begin')
         print ('start unit task HW')
 
     ## the first production in the unit task must begin this way
     def HW_start(b_unit_task='unit_task:HW state:begin'):
         b_unit_task.set('unit_task:HW state:running')
-        #b_method.set('method:response target:response content:2341 state:start')
         target='responce'
         content='2341'
         motor.enter_response(target, content)
         focus.set('HWstart')
         print ('HW:2341 - first unit task')
 
-
-    ##### HW BODY: #####
-    ### PROMPT 1 - KNOWN, FAST
-    def HW_YP(b_unit_task='unit_task:HW state:running type:?',
+    def HW_YP(b_unit_task='unit_task:HW state:running',
               vision_finst='state:finished'):
-        #b_method.set('method:response target:response content:3412 state:start')
-        #b_unit_task.set('unit_task:HW state:running2 type:?type')
+        target='responce'
+        content='3412'
+        motor.enter_response(target, content)
+        focus.set('YPstart')
         print ('YP:3412 - mid')
-
-        ## Prompt 1 = running perfect.
 
     ##### HW PROMPT 2 #####
     ### IDENTIFY -> RESPOND
     ### ROUND 2 - THREE POSSIBLE, KNOWN, LAG
     ### IDENTIFY:
+        
     def HW_identify3(b_unit_task='unit_task:HW state:running2 type:?type',
                      focus='response_entered', b_method='state:finished'):
         b_unit_task.set('unit_task:HW state:runningC type:?type')
