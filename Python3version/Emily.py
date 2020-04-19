@@ -354,7 +354,6 @@ class MyAgent(ACTR):
         motor.see_code()
         focus.set('code_seen')
         print ('waiting to see if FJ, SU, or ZB')
-        print ('getting the code for second prompt...')
         
 
     #### FJ or SU or ZB then end
@@ -363,35 +362,34 @@ class MyAgent(ACTR):
               vision_finst='state:finished',
               focus='code_seen',
               b_visual='FJ'):
+        focus.set('done')
         target='responce'
-        content='3214'
+        content='HW-FJ-3214'
         motor.enter_response(target, content)
-        focus.set('FJ')
-        print ('FJ:3214 - split')
-        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
 
     def HW_SU(b_unit_task='unit_task:HW state:running',
               vision_finst='state:finished',
               focus='code_seen',
               b_visual='SU'):
+        focus.set('done')
         target='responce'
-        content='4123'
+        content='HW-SU-4123'
         motor.enter_response(target, content)
-        focus.set('SU')
-        print ('SU:4123 - split')
-        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
 
     def HW_ZB(b_unit_task='unit_task:HW state:running',
               vision_finst='state:finished',
               focus='code_seen',
               b_visual='ZB'):
+        focus.set('done')
         target='responce'
-        content='2143'
+        content='HW-ZB-2143'
         motor.enter_response(target, content)
-        focus.set('ZB')
-        print ('ZB:2143 - split')
-        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
+    def HW_finished_ordered(b_unit_task='unit_task:HW state:running',
+                            vision_finst='state:finished',
+                            focus='done'):
+        print ('finished unit task HW(ordered)')
+        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
