@@ -13,45 +13,38 @@ class EmilyMotorModule(ccm.Model): # defines actions in the environment
 ##### This instantly causes changes in the environment
 ##### It is not a proper part of the agent    
     def referee_action(self, env_object, slot_name, slot_value):
-        print('[motor module]')
+        print('[motor module - referee]')
         x = self.parent.parent[env_object]
         setattr(x, slot_name, slot_value)
-        print (env_object)
-        print(slot_name)
-        print (slot_value)
+##        print (env_object)
+##        print(slot_name)
+##        print (slot_value)
 
 ##### This sees the code, which is a value in the state slot of the display object
     def see_code(self):
         self.parent.parent.vision_finst.state = 'busy' # register that the vision system is busy
-        print ('[motor module] getting the code')
-        yield 0.250
+        print ('[motor module - see code]')
+        yield 4
         code = self.parent.parent.display.state # get the code from the state slot of the display object
         self.parent.b_visual.set(code) # put code into visual buffer
         self.parent.b_method.set('state:finished')
-        #self.parent.parent.vision_finst.state = 'see_code' # register that see_code is complete
-        print ('[motor module] I see the code is..')
-        print (code)
-        #self.parent.parent.vision_finst.state = 're_set'
-        #b_method.set('state:finished')
-        #focus.set('code:identified')
-        print ('I have seen the code')
-
+        print ('[motor module - I see the code is..]')
+        #print (code)
+        self.parent.parent.vision_finst.state = 'finished'
 
 ##### This enters the code
     def enter_response(self, env_object, slot_value):
-        self.parent.parent.vision_finst.state = 'busy' 
+        self.parent.parent.vision_finst.state = 'busy'
         yield 3
 ##        x = eval('self.parent.parent.' + env_object)
 ##        x.state = slot_value
-##        print (env_object) 
-##        print (slot_value)
-        print ('[motor module] code entered')
+##        print (env_object); 
+        print ('[motor module] - entering',slot_value, ']')
         self.parent.parent.vision_finst.state = 'finished'
 
 #### This resets the finst state indicating the action is finished
 #### Currently using the vision finst for all actions (so no interleaving or parallal)
 
     def vision_finst_reset(self):
-        #yield 0.005
         self.parent.parent.vision_finst.state = 're_set' # reset the vision_finst
         print('[motor module] vision_finst reset')

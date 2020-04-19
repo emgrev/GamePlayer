@@ -72,20 +72,16 @@ class MyAgent(ACTR):
     ## they can take any ACT-R form (one production or more) but must eventually call a planning unit and update the context buffer
 
     def START_start(b_context='status:unoccupied planning_unit:none'):
-##        b_method.set('method:get_code target:response content:0000 state:start')
         b_unit_task.set('unit_task:START state:running')
         b_context.modify(status='starting_game')
         print ('waiting to see code')
-#        focus.set('get_code')
-        #b_unit_task.set('unit_task:HW state:runningC type:?type')
         motor.see_code()
-#        b_method.modify(state='running')
-        print ('getting code ************************************************************************')
 
 
     def START_AK(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
-                 b_method='state:finished', b_visual='AK'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                 b_method='state:finished',
+                 b_visual='AK'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
         b_context.modify(status='occupied')
         print ('run_AK_PU')
@@ -94,7 +90,8 @@ class MyAgent(ACTR):
 
     def START_RP(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
-                 b_method='state:finished', b_visual='RP'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                 b_method='state:finished',
+                 b_visual='RP'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
         b_context.modify(status='occupied')
         print ('run_RP_PU')
@@ -103,7 +100,8 @@ class MyAgent(ACTR):
 
     def START_HW(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
-                 b_method='state:finished', b_visual='HW'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                 b_method='state:finished',
+                 b_visual='HW'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
         b_plan_unit_order.set('counter:one first:HW second:RP third:AK fourth:finished') ######## new buffer
         b_context.modify(status='occupied')
@@ -168,66 +166,54 @@ class MyAgent(ACTR):
 
 ## add condition to fire this production
 
-    def AK_ordered(b_unit_task='unit_task:AK state:start type:ordered'): ### this unit task is chosen to fire by planning unit
+    def AK_ordered(b_unit_task='unit_task:AK state:start type:ordered'):
         b_unit_task.modify(state='begin')
         print ('start unit task AK')
 
     def AK_start(b_unit_task='unit_task:AK state:begin'):
         b_unit_task.set('unit_task:AK state:running')
-        target='responce'
-        content='1234'
-        motor.enter_response(target, content)
         focus.set('AK')
-        print ('AK:1234 - first unit task')
+        target='responce'
+        content='AK-AK-1234'
+        motor.enter_response(target, content)
 
     def AK_WM(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='AK'):
-        target='responce'
-        content='1432'
-        motor.enter_response(target, content)
         focus.set('WM')
-        print ('WM:1432 - mid')
+        target='responce'
+        content='AK-WM-1432'
+        motor.enter_response(target, content)
         
     def AK_SU(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='WM'):
-        target='responce'
-        content='4123'
-        motor.enter_response(target, content)
         focus.set('SU')
-        print ('SU:4123 - mid')
+        target='responce'
+        content='AK-SU-4123'
+        motor.enter_response(target, content)
 
     def AK_ZB(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='SU'):
-        target='responce'
-        content='2143'
-        motor.enter_response(target, content)
         focus.set('ZB')
-        print ('ZB:2143 - mid')
+        target='responce'
+        content='AK-ZB-2143'
+        motor.enter_response(target, content)
 
     def AK_FJ(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='ZB'):
-        target='responce'
-        content='3214'
-        motor.enter_response(target, content)
         focus.set('AK_done')
-        #b_unit_task.set('unit_task:AK state:end_task type:ordered')
+        target='responce'
+        content='AK-FJ-3214'
+        motor.enter_response(target, content)
+
+    def AK_finished_ordered(b_unit_task='unit_task:AK state:running',
+                            vision_finst='state:finished',
+                            focus='AK_done'):
+        print ('finished unit task AK(ordered)')
         b_unit_task.set('unit_task:AK state:finished type:ordered')
-        print ('FJ:3214 - mid')
-        print ('Ending Unit Task')
-        
-##    ##### AK FINISH #####
-##    ### Final step:
-##    ## Finishing the unit task
-##    def AK_finished_ordered(b_method='state:finished',
-##                            focus='response_entered',
-##                            b_unit_task='unit_task:AK state:end_task type:ordered',
-##                            b_plan_unit='ptype:ordered'):
-##        print ('finished unit task AK(ordered)')
-##        b_unit_task.set('unit_task:AK state:finished type:ordered')
 
 
 
@@ -340,120 +326,72 @@ class MyAgent(ACTR):
     ## the first production in the unit task must begin this way
     def HW_start(b_unit_task='unit_task:HW state:begin'):
         b_unit_task.set('unit_task:HW state:running')
+        focus.set('HW')
         target='responce'
-        content='2341'
+        content='HW-HW-2341'
         motor.enter_response(target, content)
-        focus.set('HWstart')
-        print ('HW:2341 - first unit task')
 
     def HW_YP(b_unit_task='unit_task:HW state:running',
-              vision_finst='state:finished'):
+              vision_finst='state:finished',
+              focus='HW'):
+        focus.set('YP')
         target='responce'
-        content='3412'
+        content='HW-YP-3412'
         motor.enter_response(target, content)
-        focus.set('YPstart')
-        print ('YP:3412 - mid')
 
-    ##### HW PROMPT 2 #####
-    ### IDENTIFY -> RESPOND
-    ### ROUND 2 - THREE POSSIBLE, KNOWN, LAG
-    ### IDENTIFY:
+    ### Unkown code
         
-    def HW_identify3(b_unit_task='unit_task:HW state:running2 type:?type',
-                     focus='response_entered', b_method='state:finished'):
-        b_unit_task.set('unit_task:HW state:runningC type:?type')
-        b_method.set('method:get_code target:response content:0000 state:start')
-        focus.set('get_code')
+    def HW_identify3(b_unit_task='unit_task:HW state:running',
+                     vision_finst='state:finished',
+                     focus='YP'):
+        ############################### referee
+        choices = ['FJ','SU','ZB']
+        x=random.choice(choices)
+##        print ('[referee] next code is')
+##        print (x)
+        motor.referee_action('display', 'state', x)
+        ############################### referee        
         motor.see_code()
-        b_method.modify(state='running')
-        print ('getting code ************************************************************************')
+        focus.set('code_seen')
         print ('waiting to see if FJ, SU, or ZB')
         print ('getting the code for second prompt...')
+        
 
-    #### FJ RESPOND:
-    def HW_FJ(b_unit_task='unit_task:HW state:runningC type:?type',
-              b_method='state:finished'):
-        b_method.set('method:response target:response content:3214 state:start')
-                ### FOCUS SET TO END
-        focus.set('HW_done')
-        b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
+    #### FJ or SU or ZB then end
+        
+    def HW_FJ(b_unit_task='unit_task:HW state:running',
+              vision_finst='state:finished',
+              focus='code_seen',
+              b_visual='FJ'):
+        target='responce'
+        content='3214'
+        motor.enter_response(target, content)
+        focus.set('FJ')
         print ('FJ:3214 - split')
-        print ('Ending Unit Task')
-
-
-    #### SU RESPOND:
-    def HW_SU(b_unit_task='unit_task:HW state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:4123 state:start')
-                ### FOCUS SET TO END
-        focus.set('HW_done')
-        b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
-        print ('SU:4123 - split')
-        print ('Ending Unit Task')
-
-    #### ZB RESPOND:
-    def HW_ZB(b_unit_task='unit_task:HW state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:2143 state:start')
-                ### FOCUS SET TO END
-        focus.set('HW_done')
-        b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
-        print ('ZB:2143 - split')
-        print ('Ending Unit Task')
-
-                    ### RUN GET CODE METH
-    ##### HW FINISH #####
-    ### Final step:
-    ## Finishing the unit task
-    def HW_finished_ordered(
-        b_method='state:finished',
-                                ## this line assumes waiting for the last method to finish
-                                focus='response_entered',
-                                b_unit_task='unit_task:HW state:end_task type:ordered',
-                                b_plan_unit='ptype:ordered'):
-        print ('finished unit task HW(ordered)')
         b_unit_task.set('unit_task:HW state:finished type:ordered')
 
-###################
-##### METHODS #####
-###################
 
-    ### RESPONSE TYPE: IDENTIFY->RESPOND
-    ### get_code method ################################ (get_code)
-    # in the case where the next response depends on the code the agent must first read the code
-    # AKA - this is the instance where the agent is not predicting the next response
-    # but reading->chosing
-    # The different pace times are accounting for the lag - LOW
-    # This method is inseperable, and ordered
-    ### PART A: IDENTIFY CODE
-
-##    def get_code_vision(b_method='method:get_code target:?target content:?content state:start'):  # target is the chunk to be altered
-##        motor.see_code()
-##        b_method.modify(state='running')
-##        print ('getting code')
-
-##    def get_code_finished(vision_finst='state:see_code'):
-##        motor.vision_finst_reset()
-##        b_method.modify(state='finished')
-##        focus.set('code:identified')
-##        print ('I have seen the code')
+    def HW_SU(b_unit_task='unit_task:HW state:running',
+              vision_finst='state:finished',
+              focus='code_seen',
+              b_visual='SU'):
+        target='responce'
+        content='4123'
+        motor.enter_response(target, content)
+        focus.set('SU')
+        print ('SU:4123 - split')
+        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
 
-    ### PART B: response known , hit it
-    # in this case the vision component took place already using the get_code method so this is only motor
+    def HW_ZB(b_unit_task='unit_task:HW state:running',
+              vision_finst='state:finished',
+              focus='code_seen',
+              b_visual='ZB'):
+        target='responce'
+        content='2143'
+        motor.enter_response(target, content)
+        focus.set('ZB')
+        print ('ZB:2143 - split')
+        b_unit_task.set('unit_task:HW state:finished type:ordered')
 
-##    def response(b_method='method:response target:?target content:?content state:start'):  # target is the chunk to be altered
-##        motor.enter_response(target, content)
-##        RT.recordRT(content) # Record a reaction time after a response is entered
-##        b_method.modify(state='running')
-##        focus.set('enter_complete')
-##        print ('entering response')
-##        print ('target object = ', target)
-##
-##    def response_entered2(b_method='method:?method target:?target state:running',
-##                          vision_finst='state:enter_response',
-##                          focus='enter_complete'):
-##        b_method.modify(state='finished')
-##        focus.set('response_entered')
-##        motor.vision_finst_reset()
-##        print ('I have altered', target)
+
