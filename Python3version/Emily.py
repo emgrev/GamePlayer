@@ -158,16 +158,6 @@ class MyAgent(ACTR):
         print ('next code is')
         print (x)
         motor.referee_action('display', 'state', x)
-        ################################
-
-
-#################
-##### START UT ##
-#################
-
-## this unit task fires from the starting condition and puts the code in the visual buffer
-## in its current form it is a hack and not a proper unit task
-
 
 
 #################
@@ -187,69 +177,57 @@ class MyAgent(ACTR):
         target='responce'
         content='1234'
         motor.enter_response(target, content)
-        focus.set('HWstart')
+        focus.set('AK')
         print ('AK:1234 - first unit task')
 
     def AK_WM(b_unit_task='unit_task:AK state:running',
-              vision_finst='state:finished'):
+              vision_finst='state:finished',
+              focus='AK'):
         target='responce'
         content='1432'
         motor.enter_response(target, content)
-        focus.set('WMstart')
+        focus.set('WM')
         print ('WM:1432 - mid')
-
-##    ## the first production in the unit task must begin this way
-##    def AK_start(b_unit_task='unit_task:AK state:begin type:?type'):
-##        b_unit_task.set('unit_task:AK state:running2 type:?type')
-##        b_method.set('method:response target:response content:1234 state:start')
-####        focus.set('AKstart')
-##        print ('AK:1234 - first unit task')
-##
-##    ## body of unit task
-##    #### RESPOND WM:
-##    def AK_WM(b_unit_task='unit_task:AK state:running2 type:?type',
-##                            b_method='state:finished'):
-##        b_method.set('method:response target:response content:1432 state:start')
-##        b_unit_task.set('unit_task:AK state:running3 type:?type')
-##        print ('WM:1432 - mid')
-
-    #### RESPOND SU:
-    def AK_SU(b_unit_task='unit_task:AK state:running3 type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:4123 state:start')
-        b_unit_task.set('unit_task:AK state:running4 type:?type')
+        
+    def AK_SU(b_unit_task='unit_task:AK state:running',
+              vision_finst='state:finished',
+              focus='WM'):
+        target='responce'
+        content='4123'
+        motor.enter_response(target, content)
+        focus.set('SU')
         print ('SU:4123 - mid')
 
-    #### RESPOND ZB:
-    def AK_ZB(b_unit_task='unit_task:AK state:running4 type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:2143 state:start')
-        b_unit_task.set('unit_task:AK state:running5 type:?type')
+    def AK_ZB(b_unit_task='unit_task:AK state:running',
+              vision_finst='state:finished',
+              focus='SU'):
+        target='responce'
+        content='2143'
+        motor.enter_response(target, content)
+        focus.set('ZB')
         print ('ZB:2143 - mid')
 
-    ### RESPOND FJ
-    def AK_FJ(b_unit_task='unit_task:AK state:running5 type:?type',
-                   b_method='state:finished',
-                   focus='response_entered'):
-        b_method.set('method:response target:response content:3214 state:start')
-        ### FOCUS SET TO END
+    def AK_FJ(b_unit_task='unit_task:AK state:running',
+              vision_finst='state:finished',
+              focus='ZB'):
+        target='responce'
+        content='3214'
+        motor.enter_response(target, content)
         focus.set('AK_done')
-        b_unit_task.set('unit_task:AK state:end_task type:ordered')  ## this line ends the unit task
+        #b_unit_task.set('unit_task:AK state:end_task type:ordered')
+        b_unit_task.set('unit_task:AK state:finished type:ordered')
         print ('FJ:3214 - mid')
         print ('Ending Unit Task')
-
-    ### RUN GET CODE METH
-    ##### AK FINISH #####
-    ### Final step:
-    ## Finishing the unit task
-    def AK_finished_ordered(
-        b_method='state:finished',
-                                ## this line assumes waiting for the last method to finish
-                                focus='response_entered',
-                                b_unit_task='unit_task:AK state:end_task type:ordered',
-                                b_plan_unit='ptype:ordered'):
-        print ('finished unit task AK(ordered)')
-        b_unit_task.set('unit_task:AK state:finished type:ordered')
+        
+##    ##### AK FINISH #####
+##    ### Final step:
+##    ## Finishing the unit task
+##    def AK_finished_ordered(b_method='state:finished',
+##                            focus='response_entered',
+##                            b_unit_task='unit_task:AK state:end_task type:ordered',
+##                            b_plan_unit='ptype:ordered'):
+##        print ('finished unit task AK(ordered)')
+##        b_unit_task.set('unit_task:AK state:finished type:ordered')
 
 
 
