@@ -7,7 +7,7 @@ from random import randrange, uniform
 ##### MOTOR MODULE #####
 ########################
 
-class MotorModule(ccm.Model): # defines actions in the environment
+class EmilyMotorModule(ccm.Model): # defines actions in the environment
     
 
 ##### This instantly causes changes in the environment
@@ -39,14 +39,14 @@ class MotorModule(ccm.Model): # defines actions in the environment
 
 ##### This enters the code
     def enter_response(self, env_object, slot_value):
-        #self.parent.parent.vision_finst.state = 'busy' # using vision finst for now
-        #yield 3
+        self.parent.parent.vision_finst.state = 'busy' 
+        yield 3
 ##        x = eval('self.parent.parent.' + env_object)
 ##        x.state = slot_value
 ##        print (env_object) 
 ##        print (slot_value)
         print ('[motor module] code entered')
-        #self.parent.parent.vision_finst.state = 'enter_response' # using vision finst for now
+        self.parent.parent.vision_finst.state = 'finished'
 
 #### This resets the finst state indicating the action is finished
 #### Currently using the vision finst for all actions (so no interleaving or parallal)

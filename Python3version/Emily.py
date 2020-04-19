@@ -1,6 +1,6 @@
 import sys
 import ccm
-from MotorModule import *
+from EmilyMotorModule import *
 from RTModule import *
 from ccm.lib.actr import *
 from random import randrange, uniform
@@ -29,7 +29,7 @@ class MyAgent(ACTR):
 # MODULES (import modules into agent, connect to buffers, and add initial content)
 
     # motor module - defined above
-    motor = MotorModule(b_motor)
+    motor = EmilyMotorModule(b_motor)
 
     # declarative memory module - from CCM suite
     DM = Memory(b_DM)
@@ -71,7 +71,16 @@ class MyAgent(ACTR):
     ## these productions are the highest level of SGOMS and fire off the context buffer
     ## they can take any ACT-R form (one production or more) but must eventually call a planning unit and update the context buffer
 
-
+    def START_start(b_context='status:unoccupied planning_unit:none'):
+##        b_method.set('method:get_code target:response content:0000 state:start')
+        b_unit_task.set('unit_task:START state:running')
+        b_context.modify(status='starting_game')
+        print ('waiting to see code')
+#        focus.set('get_code')
+        #b_unit_task.set('unit_task:HW state:runningC type:?type')
+        motor.see_code()
+#        b_method.modify(state='running')
+        print ('getting code ************************************************************************')
 
 
     def START_AK(b_context='status:starting_game planning_unit:none',
@@ -159,11 +168,7 @@ class MyAgent(ACTR):
 ## this unit task fires from the starting condition and puts the code in the visual buffer
 ## in its current form it is a hack and not a proper unit task
 
-    def START_start(b_context='status:unoccupied planning_unit:none'):
-        b_method.set('method:get_code target:response content:0000 state:start')
-        b_unit_task.set('unit_task:START state:running')
-        b_context.modify(status='starting_game')
-        print ('waiting to see code')
+
 
 #################
 ##### AK UT #####
@@ -340,19 +345,22 @@ class MyAgent(ACTR):
         print ('start unit task HW')
 
     ## the first production in the unit task must begin this way
-    def HW_start(b_unit_task='unit_task:HW state:begin type:?type'):
-        b_unit_task.set('unit_task:HW state:running type:?type')
-        b_method.set('method:response target:response content:2341 state:start')
+    def HW_start(b_unit_task='unit_task:HW state:begin'):
+        b_unit_task.set('unit_task:HW state:running')
+        #b_method.set('method:response target:response content:2341 state:start')
+        target='responce'
+        content='2341'
+        motor.enter_response(target, content)
         focus.set('HWstart')
         print ('HW:2341 - first unit task')
 
 
     ##### HW BODY: #####
     ### PROMPT 1 - KNOWN, FAST
-    def HW_YP(b_unit_task='unit_task:HW state:running type:?type',
-                   b_method='state:finished'):
-        b_method.set('method:response target:response content:3412 state:start')
-        b_unit_task.set('unit_task:HW state:running2 type:?type')
+    def HW_YP(b_unit_task='unit_task:HW state:running type:?',
+              vision_finst='state:finished'):
+        #b_method.set('method:response target:response content:3412 state:start')
+        #b_unit_task.set('unit_task:HW state:running2 type:?type')
         print ('YP:3412 - mid')
 
         ## Prompt 1 = running perfect.
@@ -362,16 +370,19 @@ class MyAgent(ACTR):
     ### ROUND 2 - THREE POSSIBLE, KNOWN, LAG
     ### IDENTIFY:
     def HW_identify3(b_unit_task='unit_task:HW state:running2 type:?type',
-                            focus='response_entered', b_method='state:finished'):
+                     focus='response_entered', b_method='state:finished'):
+        b_unit_task.set('unit_task:HW state:runningC type:?type')
         b_method.set('method:get_code target:response content:0000 state:start')
         focus.set('get_code')
-        b_unit_task.set('unit_task:HW state:runningC type:?type')
+        motor.see_code()
+        b_method.modify(state='running')
+        print ('getting code ************************************************************************')
         print ('waiting to see if FJ, SU, or ZB')
         print ('getting the code for second prompt...')
 
     #### FJ RESPOND:
     def HW_FJ(b_unit_task='unit_task:HW state:runningC type:?type',
-                            b_method='state:finished'):
+              b_method='state:finished'):
         b_method.set('method:response target:response content:3214 state:start')
                 ### FOCUS SET TO END
         focus.set('HW_done')
@@ -426,33 +437,33 @@ class MyAgent(ACTR):
     # This method is inseperable, and ordered
     ### PART A: IDENTIFY CODE
 
-    def get_code_vision(b_method='method:get_code target:?target content:?content state:start'):  # target is the chunk to be altered
-        motor.see_code()
-        b_method.modify(state='running')
-        print ('getting code')
+##    def get_code_vision(b_method='method:get_code target:?target content:?content state:start'):  # target is the chunk to be altered
+##        motor.see_code()
+##        b_method.modify(state='running')
+##        print ('getting code')
 
-    def get_code_finished(vision_finst='state:see_code'):
-        motor.vision_finst_reset()
-        b_method.modify(state='finished')
-        focus.set('code:identified')
-        print ('I have seen the code')
+##    def get_code_finished(vision_finst='state:see_code'):
+##        motor.vision_finst_reset()
+##        b_method.modify(state='finished')
+##        focus.set('code:identified')
+##        print ('I have seen the code')
 
 
     ### PART B: response known , hit it
     # in this case the vision component took place already using the get_code method so this is only motor
 
-    def response(b_method='method:response target:?target content:?content state:start'):  # target is the chunk to be altered
-        motor.enter_response(target, content)
-        RT.recordRT(content) # Record a reaction time after a response is entered
-        b_method.modify(state='running')
-        focus.set('enter_complete')
-        print ('entering response')
-        print ('target object = ', target)
-
-    def response_entered2(b_method='method:?method target:?target state:running',
-                          vision_finst='state:enter_response',
-                          focus='enter_complete'):
-        b_method.modify(state='finished')
-        focus.set('response_entered')
-        motor.vision_finst_reset()
-        print ('I have altered', target)
+##    def response(b_method='method:response target:?target content:?content state:start'):  # target is the chunk to be altered
+##        motor.enter_response(target, content)
+##        RT.recordRT(content) # Record a reaction time after a response is entered
+##        b_method.modify(state='running')
+##        focus.set('enter_complete')
+##        print ('entering response')
+##        print ('target object = ', target)
+##
+##    def response_entered2(b_method='method:?method target:?target state:running',
+##                          vision_finst='state:enter_response',
+##                          focus='enter_complete'):
+##        b_method.modify(state='finished')
+##        focus.set('response_entered')
+##        motor.vision_finst_reset()
+##        print ('I have altered', target)
