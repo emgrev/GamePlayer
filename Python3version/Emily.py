@@ -39,32 +39,14 @@ class MyAgent(ACTR):
 
     # initial buffer contents
     b_context.set('status:unoccupied planning_unit:none')
-    b_plan_unit.set('planning_unit:P cuelag:P cue:P unit_task:P state:P ptype:P')
+    b_plan_unit.set('planning_unit:P unit_task:P state:P ptype:P')
     b_visual.set('00')
     focus.set('start')
     b_plan_unit_order.set('counter:oo first:oo second:oo third:oo fourth:oo')
 
     # initial memory contents
 
-    DM.add('planning_unit:AK         cuelag:none          cue:start          unit_task:AK')
-    DM.add('planning_unit:AK         cuelag:start         cue:AK              unit_task:HW')
-    DM.add('planning_unit:AK         cuelag:AK             cue:HW              unit_task:RP')
-    DM.add('planning_unit:AK         cuelag:HW              cue:RP              unit_task:finished')
 
-    DM.add('planning_unit:RP         cuelag:none          cue:start          unit_task:RP')
-    DM.add('planning_unit:RP         cuelag:start         cue:RP              unit_task:HW')
-    DM.add('planning_unit:RP         cuelag:RP             cue:HW              unit_task:AK')
-    DM.add('planning_unit:RP         cuelag:HW              cue:AK              unit_task:finished')
-
-    DM.add('planning_unit:HW         cuelag:none          cue:start          unit_task:HW')
-    DM.add('planning_unit:HW         cuelag:start         cue:HW              unit_task:RP')
-    DM.add('planning_unit:HW         cuelag:HW             cue:RP              unit_task:AK')
-    DM.add('planning_unit:HW         cuelag:RP              cue:AK              unit_task:finished')
-
-##    DM.add('planning_unit:start_game      cuelag:none          cue:start          unit_task:START')
-##    DM.add('planning_unit:start_game      cuelag:start         cue:no_cue            unit_task:finished')
-
-## this could be used, but instead the code goes straight to the START uniti task
 
 ########### create productions for choosing planning units ###########
 
@@ -82,7 +64,8 @@ class MyAgent(ACTR):
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
                  b_visual='AK'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='AK',cuelag='none',cue='start',unit_task='AK',state='begin_sequence',ptype='ordered')
+        b_plan_unit.modify(planning_unit='AK',unit_task='AK',state='begin_sequence',ptype='ordered')
+
         b_context.modify(status='occupied')
         print ('run_AK_PU')
         b_plan_unit_order.set('counter:one first:AK second:HW third:RP fourth:finished') ######## new buffer
@@ -92,7 +75,7 @@ class MyAgent(ACTR):
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
                  b_visual='RP'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='RP',cuelag='none',cue='start',unit_task='RP',state='begin_sequence',ptype='ordered')
+        b_plan_unit.modify(planning_unit='RP',unit_task='RP',state='begin_sequence',ptype='ordered')
         b_context.modify(status='occupied')
         print ('run_RP_PU')
         b_plan_unit_order.set('counter:one first:RP second:HW third:AK fourth:finished') ######## new buffer
@@ -102,7 +85,7 @@ class MyAgent(ACTR):
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
                  b_visual='HW'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='HW',cuelag='none',cue='start',unit_task='HW',state='begin_sequence',ptype='ordered')
+        b_plan_unit.modify(planning_unit='HW',unit_task='HW',state='begin_sequence',ptype='ordered')
         b_plan_unit_order.set('counter:one first:HW second:RP third:AK fourth:finished') ######## new buffer
         b_context.modify(status='occupied')
         print ('run_HW_PU')
@@ -140,7 +123,7 @@ class MyAgent(ACTR):
                                  b_plan_unit_order='counter:three first:?first second:?second third:?third fourth:?fourth'):
         b_plan_unit_order.modify(counter='four')
         b_unit_task.set('unit_task:?fourth state:start type:ordered')
-        print ('fast - start third unit task')
+        print ('fast - start fourth unit task')
 
 ########################## these manage planning units that are finished ###################
 
