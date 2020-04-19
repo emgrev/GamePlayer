@@ -204,14 +204,14 @@ class MyAgent(ACTR):
     def AK_FJ(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='ZB'):
-        focus.set('AK_done')
+        focus.set('done')
         target='responce'
         content='AK-FJ-3214'
         motor.enter_response(target, content)
 
     def AK_finished_ordered(b_unit_task='unit_task:AK state:running',
                             vision_finst='state:finished',
-                            focus='AK_done'):
+                            focus='done'):
         print ('finished unit task AK(ordered)')
         b_unit_task.set('unit_task:AK state:finished type:ordered')
 
@@ -225,89 +225,76 @@ class MyAgent(ACTR):
 # RP unit task RP-SU<
 #                    ZB-WM
 
-
-# add condition to fire production
-    def RP_ordered(b_unit_task='unit_task:RP state:start type:ordered'): ### this unit task is chosen to fire by planning unit
+    def RP_ordered(b_unit_task='unit_task:RP state:start type:ordered'):
         b_unit_task.modify(state='begin')
         print ('start unit task RP')
 
-    ## the first production in the unit task must begin this way
-    def RP_start(b_unit_task='unit_task:RP state:begin type:?type'):
-        b_unit_task.set('unit_task:RP state:running type:?type')
-        b_method.set('method:response target:response content:4321 state:start')
-        focus.set('RPstart')
-        print ('RP:4321 - first unit task')
+    def RP_start(b_unit_task='unit_task:RP state:begin'):
+        b_unit_task.set('unit_task:RP state:running')
+        focus.set('RP')
+        target='responce'
+        content='RP-RP-4321'
+        motor.enter_response(target, content)
 
-    ##### RP BODY: #####
-    ### PROMPT 1 - KNOWN, FAST
-    def RP_SU(b_unit_task='unit_task:RP state:running type:?type',
-                   b_method='state:finished'):
-        b_method.set('method:response target:response content:4123 state:start')
-        b_unit_task.set('unit_task:RP state:running2 type:?type')
-        print ('SU:4123 - mid')
+    def RP_SU(b_unit_task='unit_task:RP state:running',
+              vision_finst='state:finished',
+              focus='RP'):
+        focus.set('SU')
+        target='responce'
+        content='RP-SU-4123'
+        motor.enter_response(target, content)
 
-        ## Prompt 1 = running perfect.
-
-    ##### RP PROMPT 2 #####
-    ### IDENTIFY -> RESPOND
-    ### ROUND 2 - TWO POSSIBLE, KNOWN, LAG
-    ### IDENTIFY:
-    def RP_identify2(b_unit_task='unit_task:RP state:running2 type:?type',
-                     focus='response_entered', b_method='state:finished'):
-        b_method.set('method:get_code target:response content:0000 state:start')
-        focus.set('get_code')
-        b_unit_task.set('unit_task:RP state:runningC type:?type')
+    ### Unkown code
+        
+    def RP_identify2(b_unit_task='unit_task:RP state:running',
+                     vision_finst='state:finished',
+                     focus='SU'):
+        ############################### referee
+        choices = ['YP','ZB']
+        x=random.choice(choices)
+        motor.referee_action('display', 'state', x)
+        ############################### referee        
+        motor.see_code()
+        focus.set('code_seen')
         print ('waiting to see if YP or ZB')
 
-    #### RESPOND YP:
-    def RP_YP(b_unit_task='unit_task:RP state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:3412 state:start')
-        b_unit_task.set('unit_task:RP state:running3 type:?type')
-        print ('YP:3412 - split')
-        # next is FJ
+    def RP_YP(b_unit_task='unit_task:RP state:running',
+              vision_finst='state:finished',
+              focus='code_seen',
+              b_visual='YP'):
+        focus.set('done')
+        target='responce'
+        content='RP-YP-3412'
+        motor.enter_response(target, content)
 
+    def RP_ZB(b_unit_task='unit_task:RP state:running',
+              vision_finst='state:finished',
+              focus='code_seen',
+              b_visual='ZB'):
+        focus.set('done')
+        target='responce'
+        content='RP-ZB-2143'
+        motor.enter_response(target, content)
 
-    ### RESPOND ZB:
-    def RP_ZB(b_unit_task='unit_task:RP state:runningC type:?type',
-                            b_method='state:finished'):
-        b_method.set('method:response target:response content:2143 state:start')
-        b_unit_task.set('unit_task:RP state:running4 type:?type')
-        print ('ZB:2143 - split')
-        # next is WM
-        ### RUN GET CODE METH
+    def RP_FJ(b_unit_task='unit_task:RP state:running',
+              vision_finst='state:finished',
+              focus='YP'):
+        focus.set('done')
+        target='responce'
+        content='RP-FJ-3214'
+        motor.enter_response(target, content)
 
-    ##### RP PROMPT 3 #####
-    ### ROUND 3:
-    ### BANG BANG
+    def RP_WM(b_unit_task='unit_task:RP state:running',
+              vision_finst='state:finished',
+              focus='ZB'):
+        focus.set('done')
+        target='responce'
+        content='RP-WM-1432'
+        motor.enter_response(target, content)
 
-    ### RESPOND FJ
-    def RP_FJ(b_unit_task='unit_task:RP state:running3 type:?type',
-                   focus='response_entered'):
-        b_method.set('method:response target:response content:3214 state:start')
-        ### FOCUS SET TO END
-        focus.set('RP_done')
-        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('FJ:3214 - mid')
-
-    ### RESPOND WM
-    def RP_WM(b_unit_task='unit_task:RP state:running4 type:?type',
-                   focus='response_entered'):
-        b_method.set('method:response target:response content:1432 state:start')
-        ### FOCUS SET TO END
-        focus.set('RP_done')
-        b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('WM:1432 - mid')
-
-    ##### RP FINISH #####
-    ### Final step:
-    ## Finishing the unit task
-    def RP_finished_ordered(
-        b_method='state:finished',
-                                ## this line assumes waiting for the last method to finish
-                                focus='response_entered',
-                                b_unit_task='unit_task:RP state:end_task type:ordered',
-                                b_plan_unit='ptype:ordered'):
+    def RP_finished_ordered(b_unit_task='unit_task:RP state:running',
+                            vision_finst='state:finished',
+                            focus='done'):
         print ('finished unit task RP(ordered)')
         b_unit_task.set('unit_task:RP state:finished type:ordered')
 
@@ -347,8 +334,6 @@ class MyAgent(ACTR):
         ############################### referee
         choices = ['FJ','SU','ZB']
         x=random.choice(choices)
-##        print ('[referee] next code is')
-##        print (x)
         motor.referee_action('display', 'state', x)
         ############################### referee        
         motor.see_code()
