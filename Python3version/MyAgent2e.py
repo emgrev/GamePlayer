@@ -112,28 +112,28 @@ class MyAgent(ACTR):
     def setup_first_unit_task(b_plan_unit='unit_task:?unit_task state:begin_sequence ptype:ordered'):
         b_unit_task.set('unit_task:?unit_task state:start type:ordered')
         b_plan_unit.modify(state='running')
-        print ('fast - start first unit task')
+        print ('fast - start first unit task 11111111111111111111111111111111111111111111111111111111111111111111111111111')
 
     def request_second_unit_task(b_plan_unit='state:running',
                                  b_unit_task='unit_task:?unit_task state:finished type:ordered',
                                  b_plan_unit_order='counter:one first:?first second:?second third:?third fourth:?fourth'):
         b_unit_task.set('unit_task:?second state:start type:ordered')
         b_plan_unit_order.modify(counter='two')
-        print ('fast - start second unit task')
+        print ('fast - start second unit task >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 2222222222222222222222222222')
 
     def request_third_unit_task(b_plan_unit='state:running',
                                 b_unit_task='unit_task:?unit_task state:finished type:ordered',
                                 b_plan_unit_order='counter:two first:?first second:?second third:?third fourth:?fourth',):
         b_unit_task.set('unit_task:?third state:start type:ordered')
         b_plan_unit_order.modify(counter='three')
-        print ('fast - start third unit task')
+        print ('fast - start third unit task >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 333333333333333333333333333333')
 
     def request_fourth_unit_task(b_plan_unit='state:running',
                                  b_unit_task='unit_task:?unit_task state:finished type:ordered',
                                  b_plan_unit_order='counter:three first:?first second:?second third:?third fourth:?fourth'):
         b_plan_unit_order.modify(counter='four')
         b_unit_task.set('unit_task:?fourth state:start type:ordered')
-        print ('fast - start third unit task')
+        print ('fast - start third unit task >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 444444444444444444444444444444')
 
 ########################## these manage planning units that are finished ###################
 
@@ -146,7 +146,7 @@ class MyAgent(ACTR):
         ############################### referee
         choices = ['AK','RP','HW']
         x=random.choice(choices)
-        print ('next code is')
+        print ('next code is &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
         print (x)
         motor.referee_action('display', 'state', x)
         ################################
@@ -182,7 +182,7 @@ class MyAgent(ACTR):
         b_unit_task.set('unit_task:AK state:running2 type:?type')
         b_method.set('method:response target:response content:1234 state:start')
 ##        focus.set('AKstart')
-        print ('AK:1234 - first unit task')
+        print ('AK:1234')
 
     ## body of unit task
     #### RESPOND WM:
@@ -190,21 +190,21 @@ class MyAgent(ACTR):
                             b_method='state:finished'):
         b_method.set('method:response target:response content:1432 state:start')
         b_unit_task.set('unit_task:AK state:running3 type:?type')
-        print ('WM:1432 - mid')
+        print ('WM:1432')
 
     #### RESPOND SU:
     def AK_SU(b_unit_task='unit_task:AK state:running3 type:?type',
                             b_method='state:finished'):
         b_method.set('method:response target:response content:4123 state:start')
         b_unit_task.set('unit_task:AK state:running4 type:?type')
-        print ('SU:4123 - mid')
+        print ('SU:4123')
 
     #### RESPOND ZB:
     def AK_ZB(b_unit_task='unit_task:AK state:running4 type:?type',
                             b_method='state:finished'):
         b_method.set('method:response target:response content:2143 state:start')
         b_unit_task.set('unit_task:AK state:running5 type:?type')
-        print ('ZB:2143 - mid')
+        print ('ZB:2143')
 
     ### RESPOND FJ
     def AK_FJ(b_unit_task='unit_task:AK state:running5 type:?type',
@@ -214,7 +214,7 @@ class MyAgent(ACTR):
         ### FOCUS SET TO END
         focus.set('AK_done')
         b_unit_task.set('unit_task:AK state:end_task type:ordered')  ## this line ends the unit task
-        print ('FJ:3214 - mid')
+        print ('FJ:3214')
         print ('Ending Unit Task')
 
     ### RUN GET CODE METH
@@ -229,8 +229,6 @@ class MyAgent(ACTR):
                                 b_plan_unit='ptype:ordered'):
         print ('finished unit task AK(ordered)')
         b_unit_task.set('unit_task:AK state:finished type:ordered')
-
-
 
 ########################
 ##### RP Unit Task #####
@@ -251,7 +249,7 @@ class MyAgent(ACTR):
         b_unit_task.set('unit_task:RP state:running type:?type')
         b_method.set('method:response target:response content:4321 state:start')
         focus.set('RPstart')
-        print ('RP:4321 - first unit task')
+        print ('RP:4321')
 
     ##### RP BODY: #####
     ### PROMPT 1 - KNOWN, FAST
@@ -259,7 +257,7 @@ class MyAgent(ACTR):
                    b_method='state:finished'):
         b_method.set('method:response target:response content:4123 state:start')
         b_unit_task.set('unit_task:RP state:running2 type:?type')
-        print ('SU:4123 - mid')
+        print ('SU:4123')
 
         ## Prompt 1 = running perfect.
 
@@ -268,18 +266,19 @@ class MyAgent(ACTR):
     ### ROUND 2 - TWO POSSIBLE, KNOWN, LAG
     ### IDENTIFY:
     def RP_identify2(b_unit_task='unit_task:RP state:running2 type:?type',
-                     focus='response_entered', b_method='state:finished'):
+                            focus='response_entered', b_method='state:finished'):
         b_method.set('method:get_code target:response content:0000 state:start')
         focus.set('get_code')
         b_unit_task.set('unit_task:RP state:runningC type:?type')
         print ('waiting to see if YP or ZB')
+        print ('getting the code for second prompt...')
 
     #### RESPOND YP:
     def RP_YP(b_unit_task='unit_task:RP state:runningC type:?type',
                             b_method='state:finished'):
         b_method.set('method:response target:response content:3412 state:start')
         b_unit_task.set('unit_task:RP state:running3 type:?type')
-        print ('YP:3412 - split')
+        print ('YP:3412')
         # next is FJ
 
 
@@ -288,7 +287,7 @@ class MyAgent(ACTR):
                             b_method='state:finished'):
         b_method.set('method:response target:response content:2143 state:start')
         b_unit_task.set('unit_task:RP state:running4 type:?type')
-        print ('ZB:2143 - split')
+        print ('ZB:2143')
         # next is WM
         ### RUN GET CODE METH
 
@@ -303,7 +302,8 @@ class MyAgent(ACTR):
         ### FOCUS SET TO END
         focus.set('RP_done')
         b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('FJ:3214 - mid')
+        print ('FJ:3214')
+        print ('Ending Unit Task')
 
     ### RESPOND WM
     def RP_WM(b_unit_task='unit_task:RP state:running4 type:?type',
@@ -312,8 +312,10 @@ class MyAgent(ACTR):
         ### FOCUS SET TO END
         focus.set('RP_done')
         b_unit_task.set('unit_task:RP state:end_task type:ordered')  ## this line ends the unit task
-        print ('WM:1432 - mid')
+        print ('WM:1432')
+        print ('Ending Unit Task')
 
+                ### RUN GET CODE METH
     ##### RP FINISH #####
     ### Final step:
     ## Finishing the unit task
@@ -344,7 +346,7 @@ class MyAgent(ACTR):
         b_unit_task.set('unit_task:HW state:running type:?type')
         b_method.set('method:response target:response content:2341 state:start')
         focus.set('HWstart')
-        print ('HW:2341 - first unit task')
+        print ('HW:2341')
 
 
     ##### HW BODY: #####
@@ -353,7 +355,7 @@ class MyAgent(ACTR):
                    b_method='state:finished'):
         b_method.set('method:response target:response content:3412 state:start')
         b_unit_task.set('unit_task:HW state:running2 type:?type')
-        print ('YP:3412 - mid')
+        print ('YP:3412')
 
         ## Prompt 1 = running perfect.
 
@@ -376,7 +378,7 @@ class MyAgent(ACTR):
                 ### FOCUS SET TO END
         focus.set('HW_done')
         b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
-        print ('FJ:3214 - split')
+        print ('FJ:3214')
         print ('Ending Unit Task')
 
 
@@ -387,7 +389,7 @@ class MyAgent(ACTR):
                 ### FOCUS SET TO END
         focus.set('HW_done')
         b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
-        print ('SU:4123 - split')
+        print ('SU:4123')
         print ('Ending Unit Task')
 
     #### ZB RESPOND:
@@ -397,7 +399,7 @@ class MyAgent(ACTR):
                 ### FOCUS SET TO END
         focus.set('HW_done')
         b_unit_task.set('unit_task:HW state:end_task type:ordered')  ## this line ends the unit task
-        print ('ZB:2143 - split')
+        print ('ZB:2143')
         print ('Ending Unit Task')
 
                     ### RUN GET CODE METH
@@ -436,6 +438,8 @@ class MyAgent(ACTR):
         b_method.modify(state='finished')
         focus.set('code:identified')
         print ('I have seen the code')
+
+
 
 
     ### PART B: response known , hit it

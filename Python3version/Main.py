@@ -10,7 +10,7 @@ sys.path.append('/Users/robertwest/pythonACTR3-master/')
 
 import ccm
 from random import randrange, uniform
-from MyAgent import MyAgent
+from Emily import MyAgent
 from Manager import Manager
 log = ccm.log()
 #log=ccm.log(html=True)
@@ -19,10 +19,10 @@ from ccm.lib.actr import *
 class hyrule (ccm.Model):
 
 ### objects for task preformance
-    response = ccm.Model(isa='response', state='state', salience=0.99)
-    display = ccm.Model(isa='diplay', state='AK',salience=0.99)
-    response_entered = ccm.Model(isa='response_entered', state='no', salience=0.99)
-    motor_finst = ccm.Model(isa='motor_finst', state='re_set')
+    response = ccm.Model(isa='response', state='state')
+    display = ccm.Model(isa='diplay', state='RP')
+    response_entered = ccm.Model(isa='response_entered', state='no')
+    vision_finst = ccm.Model(isa='motor_finst', state='re_set')
 
 ######## run model #########
 link = MyAgent()         # name the agent
