@@ -39,7 +39,7 @@ class MyAgent(ACTR):
 
     # initial buffer contents
     b_context.set('status:unoccupied planning_unit:none')
-    b_plan_unit.set('planning_unit:P unit_task:P state:P ptype:P')
+    b_plan_unit.set('planning_unit:P unit_task:P state:P type:P')
     b_visual.set('00')
     focus.set('start')
     b_plan_unit_order.set('counter:oo first:oo second:oo third:oo fourth:oo')
@@ -56,15 +56,15 @@ class MyAgent(ACTR):
     def START_start(b_context='status:unoccupied planning_unit:none'):
         b_unit_task.set('unit_task:START state:running')
         b_context.modify(status='starting_game')
-        print ('waiting to see code')
+        print ('Look at code to determin new planning unit')
         motor.see_code()
 
 
     def START_AK(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='AK'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='AK',unit_task='AK',state='begin_sequence',ptype='ordered')
+                 b_visual='AK'):  
+        b_plan_unit.modify(planning_unit='AK',unit_task='AK',state='begin_sequence',type='ordered')
 
         b_context.modify(status='occupied')
         print ('run_AK_PU')
@@ -74,8 +74,8 @@ class MyAgent(ACTR):
     def START_RP(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='RP'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='RP',unit_task='RP',state='begin_sequence',ptype='ordered')
+                 b_visual='RP'):  
+        b_plan_unit.modify(planning_unit='RP',unit_task='RP',state='begin_sequence',type='ordered')
         b_context.modify(status='occupied')
         print ('run_RP_PU')
         b_plan_unit_order.set('counter:one first:RP second:HW third:AK fourth:finished') ######## new buffer
@@ -84,8 +84,8 @@ class MyAgent(ACTR):
     def START_HW(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='HW'):  ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        b_plan_unit.modify(planning_unit='HW',unit_task='HW',state='begin_sequence',ptype='ordered')
+                 b_visual='HW'):  
+        b_plan_unit.modify(planning_unit='HW',unit_task='HW',state='begin_sequence',type='ordered')
         b_plan_unit_order.set('counter:one first:HW second:RP third:AK fourth:finished') ######## new buffer
         b_context.modify(status='occupied')
         print ('run_HW_PU')
@@ -99,7 +99,7 @@ class MyAgent(ACTR):
 
 ######################### these manage the sequence if it is an ordered planning unit stored in buffer
 
-    def setup_first_unit_task(b_plan_unit='unit_task:?unit_task state:begin_sequence ptype:ordered'):
+    def setup_first_unit_task(b_plan_unit='unit_task:?unit_task state:begin_sequence type:ordered'):
         b_unit_task.set('unit_task:?unit_task state:start type:ordered')
         b_plan_unit.modify(state='running')
         print ('fast - start first unit task')
@@ -129,16 +129,15 @@ class MyAgent(ACTR):
 
     def last_unit_task_ordered_plan(b_plan_unit='planning_unit:?planning_unit',
                                     b_unit_task='unit_task:finished state:start type:ordered'):
-        print ('finished planning unit =')
+        print ('finished planning unit =');
         print (planning_unit)
         b_unit_task.set('stop')
         b_context.modify(status='unoccupied')
         ############################### referee
         choices = ['AK','RP','HW']
         x=random.choice(choices)
-        print ('next code is')
-        print (x)
         motor.referee_action('display', 'state', x)
+        ############################### referee
 
 
 #################
