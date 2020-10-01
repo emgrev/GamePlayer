@@ -5,7 +5,7 @@
 ##############################
 
 import sys
-sys.path.append('/Users/robertwest/CCMSuite3-master')
+#sys.path.append('/Users/robertwest/CCMSuite3-master')
 
 import ccm
 
