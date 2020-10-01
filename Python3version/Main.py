@@ -5,16 +5,14 @@
 ##############################
 
 import sys
-#sys.path.append('/Users/robertwest/CCMSuite')
-sys.path.append('/Users/robertwest/pythonACTR3-master/')
+sys.path.append('/Users/robertwest/CCMSuite3-master')
 
 import ccm
+
 from random import randrange, uniform
 from Emily import MyAgent
-from Manager import Manager
+
 log = ccm.log()
-#log=ccm.log(html=True)
-from ccm.lib.actr import *
 
 class hyrule (ccm.Model):
 
@@ -26,7 +24,7 @@ class hyrule (ccm.Model):
 
 ######## run model #########
 link = MyAgent()         # name the agent
-zelda = Manager()        # name the Manager
+#zelda = Manager()        # name the Manager
 env = hyrule()           # name the environment
 env.agent = link         # put the agent in the environment
 ccm.log_everything(env)  # print out what happens in the environment
