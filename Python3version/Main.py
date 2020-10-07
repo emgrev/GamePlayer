@@ -10,7 +10,7 @@ sys.path.append('/Users/robertwest/CCMSuite3-master')
 import ccm
 
 from random import randrange, uniform
-from Emily import MyAgent
+from Player_S import MyAgent
 
 log = ccm.log()
 
