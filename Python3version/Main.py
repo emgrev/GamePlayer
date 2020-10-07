@@ -24,7 +24,6 @@ class hyrule (ccm.Model):
 
 ######## run model #########
 link = MyAgent()         # name the agent
-#zelda = Manager()        # name the Manager
 env = hyrule()           # name the environment
 env.agent = link         # put the agent in the environment
 ccm.log_everything(env)  # print out what happens in the environment
