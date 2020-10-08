@@ -1,6 +1,6 @@
 import sys
 import ccm
-from EmilyMotorModule import *
+from SMotorModule import *
 from RTModule import *
 from ccm.lib.actr import *
 from random import randrange, uniform
