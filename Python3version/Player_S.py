@@ -1,7 +1,7 @@
 import sys
 import ccm
 from SMotorModule import *
-from RTModule import *
+from RTModule import * ####################################
 from ccm.lib.actr import *
 from random import randrange, uniform
 
@@ -33,9 +33,11 @@ class MyAgent(ACTR):
 
     # declarative memory module - from CCM suite
     DM = Memory(b_DM)
-
+    
+##########################################
     # reation time module - used to record the reaction time of the agent
     RT = RTModule()
+###########################################
 
     # initial buffer contents
     b_context.set('status:unoccupied planning_unit:none')
@@ -68,6 +70,7 @@ class MyAgent(ACTR):
 
         b_context.modify(status='occupied')
         print ('run_AK_PU')
+        print ('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
         b_plan_unit_order.set('counter:one first:AK second:HW third:RP fourth:finished') ######## new buffer
 
 
@@ -78,6 +81,7 @@ class MyAgent(ACTR):
         b_plan_unit.modify(planning_unit='RP',unit_task='RP',state='begin_sequence',type='ordered')
         b_context.modify(status='occupied')
         print ('run_RP_PU')
+        print('###################################################################')
         b_plan_unit_order.set('counter:one first:RP second:HW third:AK fourth:finished') ######## new buffer
 
 
@@ -89,7 +93,7 @@ class MyAgent(ACTR):
         b_plan_unit_order.set('counter:one first:HW second:RP third:AK fourth:finished') ######## new buffer
         b_context.modify(status='occupied')
         print ('run_HW_PU')
-        print
+        print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
 ########## unit task management productions ###########
 
@@ -158,6 +162,9 @@ class MyAgent(ACTR):
         target='responce'
         content='AK-AK-1234'
         motor.enter_response(target, content)
+        #recordRT()
+        #RT.recordRT()
+        print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
 
     def AK_WM(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
@@ -166,6 +173,8 @@ class MyAgent(ACTR):
         target='responce'
         content='AK-WM-1432'
         motor.enter_response(target, content)
+        #recordRT()
+        print('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
         
     def AK_SU(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
@@ -217,6 +226,7 @@ class MyAgent(ACTR):
         target='responce'
         content='RP-RP-4321'
         motor.enter_response(target, content)
+        print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
 
     def RP_SU(b_unit_task='unit_task:RP state:running',
               vision_finst='state:finished',
@@ -248,6 +258,7 @@ class MyAgent(ACTR):
         target='responce'
         content='RP-YP-3412'
         motor.enter_response(target, content)
+        print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
 
     def RP_ZB(b_unit_task='unit_task:RP state:running',
               vision_finst='state:finished',
@@ -257,6 +268,8 @@ class MyAgent(ACTR):
         target='responce'
         content='RP-ZB-2143'
         motor.enter_response(target, content)
+        print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
+
 
     def RP_FJ(b_unit_task='unit_task:RP state:running',
               vision_finst='state:finished',
@@ -299,6 +312,7 @@ class MyAgent(ACTR):
         target='responce'
         content='HW-HW-2341'
         motor.enter_response(target, content)
+        print('PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP')
 
     def HW_YP(b_unit_task='unit_task:HW state:running',
               vision_finst='state:finished',

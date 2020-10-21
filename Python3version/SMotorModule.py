@@ -23,7 +23,7 @@ class EmilyMotorModule(ccm.Model): # defines actions in the environment
 ##### This sees the code, which is a value in the state slot of the display object
     def see_code(self):
         self.parent.parent.vision_finst.state = 'busy' # register that the vision system is busy
-        yield 650
+        yield 0.650
         print ('[vision - looking]')
         code = self.parent.parent.display.state # get the code from the state slot of the display object
         self.parent.b_visual.set(code) # put code into visual buffer
