@@ -183,6 +183,7 @@ class MyAgent(ACTR):
         b_method.set('method:response target:response content:1234 state:start')
 ##        focus.set('AKstart')
         print ('AK:1234 - first unit task')
+        
 
     ## body of unit task
     #### RESPOND WM:

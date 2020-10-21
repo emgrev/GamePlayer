@@ -12,6 +12,7 @@ import ccm
 from random import randrange, uniform
 from Player_S import MyAgent
 
+
 log = ccm.log()
 
 class hyrule (ccm.Model):
