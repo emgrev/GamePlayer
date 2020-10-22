@@ -10,7 +10,7 @@ import sys
 import ccm
 
 from random import randrange, uniform
-from Player_S import MyAgent
+from Emily import MyAgent
 
 
 log = ccm.log()
