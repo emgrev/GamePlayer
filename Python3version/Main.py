@@ -10,7 +10,8 @@ import sys
 import ccm
 
 from random import randrange, uniform
-from Emily import MyAgent
+from Player_S import MyAgent
+#       ^ here you can point the code to the agent you want, the player will then call its own motor module and whatever
 
 
 log = ccm.log()
