@@ -63,7 +63,7 @@ class MyAgent(ACTR):
     def START_AK(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='AK'):  
+                 b_visual='AK'):
         b_plan_unit.modify(planning_unit='AK',unit_task='AK',state='begin_sequence',type='ordered')
 
         b_context.modify(status='occupied')
@@ -74,7 +74,7 @@ class MyAgent(ACTR):
     def START_RP(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='RP'):  
+                 b_visual='RP'):
         b_plan_unit.modify(planning_unit='RP',unit_task='RP',state='begin_sequence',type='ordered')
         b_context.modify(status='occupied')
         print ('run_RP_PU')
@@ -84,7 +84,7 @@ class MyAgent(ACTR):
     def START_HW(b_context='status:starting_game planning_unit:none',
                  b_unit_task='unit_task:START state:running',
                  b_method='state:finished',
-                 b_visual='HW'):  
+                 b_visual='HW'):
         b_plan_unit.modify(planning_unit='HW',unit_task='HW',state='begin_sequence',type='ordered')
         b_plan_unit_order.set('counter:one first:HW second:RP third:AK fourth:finished') ######## new buffer
         b_context.modify(status='occupied')
@@ -166,7 +166,7 @@ class MyAgent(ACTR):
         target='responce'
         content='AK-WM-1432'
         motor.enter_response(target, content)
-        
+
     def AK_SU(b_unit_task='unit_task:AK state:running',
               vision_finst='state:finished',
               focus='WM'):
@@ -227,7 +227,7 @@ class MyAgent(ACTR):
         motor.enter_response(target, content)
 
     ### Unkown code
-        
+
     def RP_identify2(b_unit_task='unit_task:RP state:running',
                      vision_finst='state:finished',
                      focus='SU'):
@@ -235,7 +235,7 @@ class MyAgent(ACTR):
         choices = ['YP','ZB']
         x=random.choice(choices)
         motor.referee_action('display', 'state', x)
-        ############################### referee        
+        ############################### referee
         motor.see_code()
         focus.set('code_seen')
         print ('waiting to see if YP or ZB')
@@ -309,7 +309,7 @@ class MyAgent(ACTR):
         motor.enter_response(target, content)
 
     ### Unkown code
-        
+
     def HW_identify3(b_unit_task='unit_task:HW state:running',
                      vision_finst='state:finished',
                      focus='YP'):
@@ -317,14 +317,14 @@ class MyAgent(ACTR):
         choices = ['FJ','SU','ZB']
         x=random.choice(choices)
         motor.referee_action('display', 'state', x)
-        ############################### referee        
+        ############################### referee
         motor.see_code()
         focus.set('code_seen')
         print ('waiting to see if FJ, SU, or ZB')
-        
+
 
     #### FJ or SU or ZB then end
-        
+
     def HW_FJ(b_unit_task='unit_task:HW state:running',
               vision_finst='state:finished',
               focus='code_seen',
@@ -359,4 +359,3 @@ class MyAgent(ACTR):
                             focus='done'):
         print ('finished unit task HW(ordered)')
         b_unit_task.set('unit_task:HW state:finished type:ordered')
-
